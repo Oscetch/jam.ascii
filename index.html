@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="math_classes.js"></script>
+    <script src="camera.js"></script>
+    <script src="canvas_ascii.js"></script>
+    <script src="gameobject.js"></script>
+    <script src="objects.js"></script>
+    <script src="world.js"></script>
+    <script src="ui.js"></script>
+    <script src="scene.js"></script>
+    <title>ASCII Game</title>
+    <style>
+      canvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="gameCanvas"></canvas>
+
+    <script>
+      var canvasASCII = new CanvasASCII(document.getElementById("gameCanvas"));
+      var scene = new StartScene(canvasASCII);
+      scene.onStart();
+
+      /*
+      var button;
+      var world;
+      var ui;
+
+      function getButton() {
+        if (!button) {
+          button = createButton(canvasASCII);
+          button.updatePosition(new Point(100, 100));
+        }
+        return button;
+      }
+
+      function getUi() {
+        if (!ui) {
+          ui = new WorldUI(canvasASCII);
+        }
+        return ui;
+      }
+
+      function getWorld() {
+        if (!world) {
+          world = new World(canvasASCII);
+        }
+        return world;
+      }
+
+      canvasASCII.canvas.onmousemove = function (event) {
+        var rect = canvasASCII.canvas.getBoundingClientRect();
+        var mouseX = event.clientX - rect.left;
+        var mouseY = event.clientY - rect.top;
+        getButton().onMouseMove(new Point(mouseX, mouseY));
+      };
+      canvasASCII.canvas.onmousedown = function (event) {
+        var rect = canvasASCII.canvas.getBoundingClientRect();
+        var mouseX = event.clientX - rect.left;
+        var mouseY = event.clientY - rect.top;
+        getButton().onMouseDown(new Point(mouseX, mouseY));
+      };
+      canvasASCII.canvas.onmouseup = function (event) {
+        var rect = canvasASCII.canvas.getBoundingClientRect();
+        var mouseX = event.clientX - rect.left;
+        var mouseY = event.clientY - rect.top;
+        getButton().onMouseUp(new Point(mouseX, mouseY));
+      };
+
+      window.addEventListener("keydown", function (event) {
+        getWorld().onKeyDown(event.keyCode);
+      });
+      */
+
+      function gameLoop() {
+        scene.render();
+        requestAnimationFrame(gameLoop);
+      }
+
+      /*function update() {
+        getButton().update(canvasASCII);
+      }
+
+      function draw() {
+        canvasASCII.clear();
+
+        getWorld().render();
+        getButton().render(canvasASCII);
+      }*/
+
+      setTimeout(() => gameLoop(), 1000);
+    </script>
+  </body>
+</html>

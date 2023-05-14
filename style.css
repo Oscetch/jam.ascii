@@ -1,0 +1,9 @@
+@font-face {
+  font-family: "C64 Pro Mono";
+  src: url("C64_Pro_Mono-STYLE.otf") format("opentype");
+}
+
+canvas {
+  font-family: "C64 Pro Mono", monospace;
+  font-size: 16px;
+}
