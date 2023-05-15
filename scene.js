@@ -1,16 +1,30 @@
 class Scene {
-  constructor(canvas) {
+  #lastUpdate = 0;
+  constructor(canvas, onChangeScene) {
     this.canvas = canvas;
+    this.onChangeScene = onChangeScene;
   }
 
-  onStart() {}
+  onStart() {
+    this.#lastUpdate = Date.now();
+  }
   onEnd() {}
-  render() {}
+  render() {
+    let now = Date.now();
+    let deltaTime;
+    if (deltaTime) {
+      deltaTime = (now - this.#lastUpdate) / 1000;
+    } else {
+      deltaTime = 0.01;
+    }
+    this.#lastUpdate = now;
+    this.renderInternal(deltaTime);
+  }
+  renderInternal(deltaTime) {}
 }
 
 class StartScene extends Scene {
   #items = [];
-  #lastUpdate = 0;
 
   onStart() {
     this.canvas.canvas.style = "background-color: #000000";
@@ -31,6 +45,7 @@ class StartScene extends Scene {
     );
     const canvas = this.canvas;
     const items = this.#items;
+    const onChangeScene = this.onChangeScene;
     gameText.onTargetReached = function () {
       const description1 = new TargetMoving(
         "4 people have crashed on an asteroids,\nthey have no memory of themselves.",
@@ -58,11 +73,26 @@ class StartScene extends Scene {
         description2.color = "#FFFFFF";
 
         description2.onTargetReached = function () {
-          const startButton = new StartButton(canvas);
+          const startButton = new StartButton(canvas, () =>
+            onChangeScene(new SelectCharacterScene(canvas, null))
+          );
           startButton.updatePosition(
             new Point(center.x - startButton.background.bounds.size.x / 2, 690)
           );
           items.push(startButton);
+
+          canvas.canvas.onmousedown = function (event) {
+            var rect = canvasASCII.canvas.getBoundingClientRect();
+            var mouseX = event.clientX - rect.left;
+            var mouseY = event.clientY - rect.top;
+            startButton.onMouseDown(new Point(mouseX, mouseY));
+          };
+          canvas.canvas.onmouseup = function (event) {
+            var rect = canvasASCII.canvas.getBoundingClientRect();
+            var mouseX = event.clientX - rect.left;
+            var mouseY = event.clientY - rect.top;
+            startButton.onMouseUp(new Point(mouseX, mouseY));
+          };
         };
 
         items.push(description2);
@@ -71,19 +101,47 @@ class StartScene extends Scene {
       items.push(description1);
     };
     this.#items.push(gameText);
-    this.#lastUpdate = Date.now();
+    super.onStart();
   }
 
-  render() {
+  renderInternal(deltaTime) {
     this.canvas.clear();
-    let now = Date.now();
-    let deltaTime;
-    if (deltaTime) {
-      deltaTime = (now - this.#lastUpdate) / 1000;
-    } else {
-      deltaTime = 0.01;
+    for (let i = 0; i < this.#items.length; i++) {
+      const item = this.#items[i];
+      item.update(this.canvas, deltaTime);
+      item.render(this.canvas);
     }
-    this.#lastUpdate = now;
+  }
+}
+
+class SelectCharacterScene extends Scene {
+  #items = [];
+
+  onStart() {
+    const canvasBounds = new Rectangle(
+      new Point(),
+      new Point(this.canvas.canvas.width, this.canvas.canvas.height)
+    );
+    const center = canvasBounds.center();
+    const selectMainCharacterText = new GameObject(
+      "Select main character",
+      this.canvas
+    );
+    selectMainCharacterText.color = "#FFFFFF";
+    selectMainCharacterText.bounds.location = new Point(
+      center.x - selectMainCharacterText.bounds.size.x / 2,
+      center.y - selectMainCharacterText.bounds.size.y / 2
+    );
+    this.#items.push(selectMainCharacterText);
+
+    setTimeout(() => {
+      this.#items.pop();
+      this.canvas.canvas.style = "background-color: #FFFFFF";
+    }, 1000);
+  }
+
+  renderInternal(deltaTime) {
+    this.canvas.clear();
     for (let i = 0; i < this.#items.length; i++) {
       const item = this.#items[i];
       item.update(this.canvas, deltaTime);

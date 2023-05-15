@@ -149,7 +149,9 @@ class Button {
 }
 
 class StartButton {
-  constructor(canvas) {
+  #isClicked = false;
+
+  constructor(canvas, onClicked) {
     this.background = new GameObject(
       `
 ▎       
@@ -160,6 +162,7 @@ class StartButton {
     this.startText = new GameObject("START", canvas);
     this.startText.color = "#FFFFFF";
     this.#centerStartText();
+    this.onClicked = onClicked;
   }
 
   updatePosition(point) {
@@ -180,5 +183,18 @@ class StartButton {
       bgCenter.x - this.startText.bounds.size.x / 2,
       bgCenter.y - this.startText.bounds.size.y / 2
     );
+  }
+
+  onMouseDown(point) {
+    if (!this.#isClicked && this.background.bounds.containsPoint(point)) {
+      this.#isClicked = true;
+    }
+  }
+
+  onMouseUp(point) {
+    if (this.#isClicked && this.background.bounds.containsPoint(point)) {
+      this.onClicked();
+    }
+    this.#isClicked = false;
   }
 }
