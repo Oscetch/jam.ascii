@@ -1,29 +1,11 @@
-class Scene {
-  #lastUpdate = 0;
-  constructor(canvas, onChangeScene) {
-    this.canvas = canvas;
-    this.onChangeScene = onChangeScene;
-  }
+var TargetMoving = require("./../GameObjects/targetmoving");
+var Point = require("./../math/point");
+var Rectangle = require("./../math/rectangle");
+var Scene = require("./scene");
+var StartButton = require("./../GameObjects/startbutton");
+var SelectCharacterScene = require("./selectcharacterscene");
 
-  onStart() {
-    this.#lastUpdate = Date.now();
-  }
-  onEnd() {}
-  render() {
-    let now = Date.now();
-    let deltaTime;
-    if (deltaTime) {
-      deltaTime = (now - this.#lastUpdate) / 1000;
-    } else {
-      deltaTime = 0.01;
-    }
-    this.#lastUpdate = now;
-    this.renderInternal(deltaTime);
-  }
-  renderInternal(deltaTime) {}
-}
-
-class StartScene extends Scene {
+module.exports = class StartScene extends Scene {
   #items = [];
 
   onStart() {
@@ -82,13 +64,13 @@ class StartScene extends Scene {
           items.push(startButton);
 
           canvas.canvas.onmousedown = function (event) {
-            var rect = canvasASCII.canvas.getBoundingClientRect();
+            var rect = canvas.canvas.getBoundingClientRect();
             var mouseX = event.clientX - rect.left;
             var mouseY = event.clientY - rect.top;
             startButton.onMouseDown(new Point(mouseX, mouseY));
           };
           canvas.canvas.onmouseup = function (event) {
-            var rect = canvasASCII.canvas.getBoundingClientRect();
+            var rect = canvas.canvas.getBoundingClientRect();
             var mouseX = event.clientX - rect.left;
             var mouseY = event.clientY - rect.top;
             startButton.onMouseUp(new Point(mouseX, mouseY));
@@ -112,40 +94,4 @@ class StartScene extends Scene {
       item.render(this.canvas);
     }
   }
-}
-
-class SelectCharacterScene extends Scene {
-  #items = [];
-
-  onStart() {
-    const canvasBounds = new Rectangle(
-      new Point(),
-      new Point(this.canvas.canvas.width, this.canvas.canvas.height)
-    );
-    const center = canvasBounds.center();
-    const selectMainCharacterText = new GameObject(
-      "Select main character",
-      this.canvas
-    );
-    selectMainCharacterText.color = "#FFFFFF";
-    selectMainCharacterText.bounds.location = new Point(
-      center.x - selectMainCharacterText.bounds.size.x / 2,
-      center.y - selectMainCharacterText.bounds.size.y / 2
-    );
-    this.#items.push(selectMainCharacterText);
-
-    setTimeout(() => {
-      this.#items.pop();
-      this.canvas.canvas.style = "background-color: #FFFFFF";
-    }, 1000);
-  }
-
-  renderInternal(deltaTime) {
-    this.canvas.clear();
-    for (let i = 0; i < this.#items.length; i++) {
-      const item = this.#items[i];
-      item.update(this.canvas, deltaTime);
-      item.render(this.canvas);
-    }
-  }
-}
+};

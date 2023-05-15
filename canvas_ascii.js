@@ -1,4 +1,6 @@
-class CanvasASCII {
+const Point = require("./math/point");
+
+module.exports = class CanvasASCII {
   constructor(canvas) {
     this.canvas = canvas;
     this.canvas.width = 1440;
@@ -6,6 +8,7 @@ class CanvasASCII {
     this.ctx = canvas.getContext("2d");
     this.charWidth = 10;
     this.charHeight = 20;
+    this.font = '"C64 Pro Mono"';
     this.ctx.font = '20px "C64 Pro Mono"';
     this.ctx.textAlign = "left";
     this.ctx.textBaseline = "top";
@@ -57,4 +60,31 @@ class CanvasASCII {
   clear() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
-}
+
+  registerMouseMoveEvent(onMove) {
+    this.canvas.onmousemove = function (event) {
+      var rect = this.canvas.getBoundingClientRect();
+      var mouseX = event.clientX - rect.left;
+      var mouseY = event.clientY - rect.top;
+      onMove(new Point(mouseX, mouseY));
+    }.bind(this);
+  }
+
+  registerMouseDownEvent(onMouseDown) {
+    this.canvas.onmousedown = function (event) {
+      var rect = this.canvas.getBoundingClientRect();
+      var mouseX = event.clientX - rect.left;
+      var mouseY = event.clientY - rect.top;
+      onMouseDown(new Point(mouseX, mouseY));
+    }.bind(this);
+  }
+
+  registerMouseUpEvent(onMouseUp) {
+    this.canvas.onmouseup = function (event) {
+      var rect = this.canvas.getBoundingClientRect();
+      var mouseX = event.clientX - rect.left;
+      var mouseY = event.clientY - rect.top;
+      onMouseUp(new Point(mouseX, mouseY));
+    }.bind(this);
+  }
+};

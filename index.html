@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="style.css" />
-    <script src="bundle.js"></script>
     <title>ASCII Game</title>
     <style>
       canvas {
@@ -14,8 +13,8 @@
   <body>
     <canvas id="gameCanvas"></canvas>
 
-    <script>
-      var canvasASCII = new CanvasASCII(document.getElementById("gameCanvas"));
+    <script src="bundle.js">
+      /*var canvasASCII = new CanvasASCII(document.getElementById("gameCanvas"));
       var scene = new StartScene(canvasASCII, changeScene);
       scene.onStart();
 
@@ -23,7 +22,7 @@
         scene.onEnd();
         scene = newScene;
         scene.onStart();
-      }
+      }*/
 
       /*
       var button;
@@ -75,11 +74,12 @@
         getWorld().onKeyDown(event.keyCode);
       });
       */
-
+      /*
       function gameLoop() {
         scene.render();
         requestAnimationFrame(gameLoop);
       }
+      */
 
       /*function update() {
         getButton().update(canvasASCII);
@@ -92,7 +92,9 @@
         getButton().render(canvasASCII);
       }*/
 
+      /*
       setTimeout(() => gameLoop(), 1000);
+      */
     </script>
   </body>
 </html>
