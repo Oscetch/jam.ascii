@@ -33,13 +33,6 @@ def clearBundle():
     for f in bundleFiles:
         remove(join(bundleDirectory, f))
 
-def readJavaScript(path):
-    js = ""
-    with open(path, 'r', encoding='UTF-8') as f:
-        js = f.read()
-        f.close()
-    return js
-
 def moveFilesToBundle(files):
     for f in files:
         shutil.copy(f, bundleDirectory)

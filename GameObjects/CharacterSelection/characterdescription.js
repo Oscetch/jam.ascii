@@ -15,6 +15,7 @@ module.exports = class CharacterDescription {
   #selections;
   #selected = 0;
   #items = [];
+  #isHovered = false;
 
   constructor(canvas) {
     this.background = new CharacterDescriptionBackground(canvas);
@@ -30,6 +31,7 @@ module.exports = class CharacterDescription {
     ];
     const miaCard = new MiaCard(canvas);
     this.#items.push(miaCard);
+    miaCard.select();
     this.#items.push(new MaxCard(canvas));
     this.#items.push(new BenCard(canvas));
     this.#items.push(new AvaCard(canvas));
@@ -40,13 +42,28 @@ module.exports = class CharacterDescription {
       miaCard.items[0].bounds.location.x -
       46 -
       this.selectionIndicator.bounds.size.x;
+    const selected = this.#items[this.#selected].items[0].bounds.center().y;
+    const indicatorHeight = this.selectionIndicator.bounds.size.y;
+    this.selectionIndicator.bounds.location.y = selected - indicatorHeight / 2;
 
-    canvas.registerMouseMoveEvent(
-      this.selectButton.onMouseMove.bind(this.selectButton)
-    );
-    canvas.registerMouseUpEvent(
-      this.selectButton.onMouseUp.bind(this.selectButton)
-    );
+    canvas.registerMouseMoveEvent((point) => {
+      for (let i = 0; i < this.#items.length; i++) {
+        const item = this.#items[i];
+        item.onMouseMove(point);
+      }
+      this.selectButton.onMouseMove(point);
+    });
+    canvas.registerMouseUpEvent((point) => {
+      for (let i = 0; i < this.#items.length; i++) {
+        const item = this.#items[i];
+        if (item.combinedBounds.containsPoint(point)) {
+          this.#items[this.#selected].deselect();
+          item.select();
+          this.#selected = i;
+        }
+      }
+      this.selectButton.onMouseUp(point);
+    });
     canvas.registerMouseDownEvent(
       this.selectButton.onMouseDown.bind(this.selectButton)
     );
@@ -55,9 +72,19 @@ module.exports = class CharacterDescription {
   update(canvas, deltaTime) {
     this.selectButton.update(canvas, deltaTime);
 
-    const selected = this.#items[this.#selected].items[0].bounds.center().y;
-    const indicatorHeight = this.selectionIndicator.bounds.size.y;
-    this.selectionIndicator.bounds.location.y = selected - indicatorHeight / 2;
+    let isHovered = false;
+    for (let i = 0; i < this.#items.length; i++) {
+      const item = this.#items[i];
+      item.update(canvas, deltaTime);
+      if (item.isHovered) {
+        isHovered = true;
+        const selected = item.items[0].bounds.center().y;
+        const indicatorHeight = this.selectionIndicator.bounds.size.y;
+        this.selectionIndicator.bounds.location.y =
+          selected - indicatorHeight / 2;
+      }
+    }
+    this.#isHovered = isHovered;
   }
 
   render(canvas) {
@@ -74,6 +101,8 @@ module.exports = class CharacterDescription {
       this.#items[i].render(canvas);
     }
 
-    this.selectionIndicator.render(canvas);
+    if (this.#isHovered) {
+      this.selectionIndicator.render(canvas);
+    }
   }
 };

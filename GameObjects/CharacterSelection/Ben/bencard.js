@@ -4,6 +4,7 @@ const Point = require("./../../../math/point");
 
 module.exports = class BenCard {
   items = [];
+  isHovered = false;
 
   constructor(canvas) {
     const ben = new Ben(canvas);
@@ -20,6 +21,17 @@ module.exports = class BenCard {
     this.items.push(ben);
     this.items.push(icon);
     this.items.push(text);
+    this.combinedBounds = ben.bounds.union(icon.bounds).union(text.bounds);
+  }
+
+  select() {
+    this.items[1].regularColor = "#5722EE";
+    this.items[2].regularColor = "#5722EE";
+  }
+
+  deselect() {
+    this.items[1].regularColor = "#000000";
+    this.items[2].regularColor = "#000000";
   }
 
   update(canvas, deltaTime) {
@@ -35,8 +47,13 @@ module.exports = class BenCard {
   }
 
   onMouseMove(point) {
-    for (let i = 0; i < this.items.length; i++) {
-      this.items[i].onMouseMove(point);
+    this.isHovered = this.combinedBounds.containsPoint(point);
+    if (this.isHovered) {
+      this.items[1].isMouseOver = true;
+      this.items[2].isMouseOver = true;
+    } else {
+      this.items[1].isMouseOver = false;
+      this.items[2].isMouseOver = false;
     }
   }
 

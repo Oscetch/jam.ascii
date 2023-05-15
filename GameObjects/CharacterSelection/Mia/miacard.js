@@ -1,9 +1,11 @@
 const Mia = require("./../../Characters/mia");
 const Hoverable = require("./../../hoverable");
 const Point = require("./../../../math/point");
+const Rectangle = require("./../../../math/rectangle");
 
 module.exports = class MiaCard {
   items = [];
+  isHovered = false;
 
   constructor(canvas) {
     const mia = new Mia(canvas);
@@ -20,6 +22,18 @@ module.exports = class MiaCard {
     this.items.push(mia);
     this.items.push(icon);
     this.items.push(miaText);
+
+    this.combinedBounds = mia.bounds.union(icon.bounds).union(miaText.bounds);
+  }
+
+  select() {
+    this.items[1].regularColor = "#5722EE";
+    this.items[2].regularColor = "#5722EE";
+  }
+
+  deselect() {
+    this.items[1].regularColor = "#000000";
+    this.items[2].regularColor = "#000000";
   }
 
   update(canvas, deltaTime) {
@@ -35,8 +49,13 @@ module.exports = class MiaCard {
   }
 
   onMouseMove(point) {
-    for (let i = 0; i < this.items.length; i++) {
-      this.items[i].onMouseMove(point);
+    this.isHovered = this.combinedBounds.containsPoint(point);
+    if (this.isHovered) {
+      this.items[1].isMouseOver = true;
+      this.items[2].isMouseOver = true;
+    } else {
+      this.items[1].isMouseOver = false;
+      this.items[2].isMouseOver = false;
     }
   }
 

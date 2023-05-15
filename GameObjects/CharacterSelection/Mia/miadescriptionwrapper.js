@@ -12,18 +12,6 @@ module.exports = class MiaDescriptionWrapper {
 
     this.icon = new CharacterDescriptionIcon(canvas, "");
 
-    /*
-    this.smallIcon = new CharacterDescriptionIcon(canvas, "");
-    this.smallIcon.color = "#000000";
-    this.smallIcon.setFontSize(16);
-    this.smallIcon.bounds.location = new Point(230, 124);
-    */
-
-    /*
-    this.smallText = new GameObject("MIA", canvas, 16);
-    this.smallText.bounds.location = new Point(254, 128);
-    */
-
     this.titleText = new GameObject("MIA", canvas, 64);
     this.titleText.bounds.location = new Point(624.12, 80);
 
