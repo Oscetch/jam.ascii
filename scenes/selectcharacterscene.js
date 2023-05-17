@@ -3,6 +3,8 @@ var Rectangle = require("./../math/rectangle");
 var GameObject = require("./../GameObjects/gameobject");
 var Scene = require("./scene");
 var CharacterDescription = require("../GameObjects/CharacterSelection/characterdescription");
+const { STORAGE_SELECT_CHAR_KEY } = require("../Models/constants");
+const WorldScene = require("./worldscene");
 
 module.exports = class SelectCharacterScene extends Scene {
   #items = [];
@@ -27,7 +29,12 @@ module.exports = class SelectCharacterScene extends Scene {
     setTimeout(() => {
       this.#items.pop();
       this.canvas.canvas.style = "background-color: #FFFFFF";
-      this.#items.push(new CharacterDescription(this.canvas));
+      this.#items.push(
+        new CharacterDescription(this.canvas, (selectedName) => {
+          localStorage.setItem(STORAGE_SELECT_CHAR_KEY, selectedName);
+          this.onChangeScene(new WorldScene(this.canvas, this.onChangeScene));
+        })
+      );
     }, 1000);
   }
 

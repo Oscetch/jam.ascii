@@ -1,5 +1,6 @@
 const Point = require("./../math/point");
 const Rectangle = require("./../math/rectangle");
+const CanvasASCII = require("./../canvas_ascii");
 
 module.exports = class GameObject {
   backingArray;
@@ -7,8 +8,14 @@ module.exports = class GameObject {
   isClicked = false;
   isMouseOver = false;
   mouseListener = false;
+  bounds;
   #fontSize;
 
+  /**
+   * @param {String} ascii
+   * @param {CanvasASCII} canvas
+   * @param {Number} fontSize
+   */
   constructor(ascii, canvas, fontSize = 20) {
     this.#fontSize = fontSize;
     canvas.setFontSize(this.#fontSize);
@@ -43,6 +50,10 @@ module.exports = class GameObject {
 
   onClicked() {}
 
+  /**
+   * @param {CanvasASCII} canvas
+   * @param {Number} deltaTime
+   */
   update(canvas, deltaTime) {}
 
   render(canvas) {
@@ -58,6 +69,12 @@ module.exports = class GameObject {
     canvas.drawTexts(this.backingArray, center.x, center.y);
   }
 
+  /**
+   * @param {String[]} arr
+   * @param {CanvasASCII} canvas
+   * @param {Point} location
+   * @returns {Rectangle}
+   */
   getBounds(arr, canvas, location = new Point()) {
     let width = 0;
     let height = 0;

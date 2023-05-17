@@ -10,6 +10,7 @@ const MaxCard = require("./Max/maxcard");
 const BenCard = require("./Ben/bencard");
 const AvaCard = require("./Ava/avacard");
 const GameObject = require("./../gameobject");
+const { MIA, MAX, BEN, AVA } = require("../../Models/constants");
 
 module.exports = class CharacterDescription {
   #selections;
@@ -17,11 +18,20 @@ module.exports = class CharacterDescription {
   #items = [];
   #isHovered = false;
 
-  constructor(canvas) {
+  constructor(canvas, onSelected) {
     this.background = new CharacterDescriptionBackground(canvas);
     this.background.bounds.location = new Point(0, 704);
     this.selectButton = new SelectButton(canvas, () => {
-      console.log("FINISHED");
+      switch (this.#selected) {
+        case 0:
+          onSelected(MIA);
+        case 1:
+          onSelected(MAX);
+        case 2:
+          onSelected(BEN);
+        case 3:
+          onSelected(AVA);
+      }
     });
     this.#selections = [
       new MiaDescriptionWrapper(canvas),
@@ -61,12 +71,17 @@ module.exports = class CharacterDescription {
           item.select();
           this.#selected = i;
         }
+        item.onMouseUp(point);
       }
       this.selectButton.onMouseUp(point);
     });
-    canvas.registerMouseDownEvent(
-      this.selectButton.onMouseDown.bind(this.selectButton)
-    );
+    canvas.registerMouseDownEvent((point) => {
+      for (let i = 0; i < this.#items.length; i++) {
+        const item = this.#items[i];
+        item.onMouseDown(point);
+      }
+      this.selectButton.onMouseDown(point);
+    });
   }
 
   update(canvas, deltaTime) {

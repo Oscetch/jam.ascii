@@ -56,7 +56,7 @@ module.exports = class StartScene extends Scene {
 
         description2.onTargetReached = function () {
           const startButton = new StartButton(canvas, () =>
-            onChangeScene(new SelectCharacterScene(canvas, null))
+            onChangeScene(new SelectCharacterScene(canvas, onChangeScene))
           );
           startButton.updatePosition(
             new Point(center.x - startButton.background.bounds.size.x / 2, 690)

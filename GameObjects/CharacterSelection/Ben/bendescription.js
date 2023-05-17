@@ -6,7 +6,7 @@ module.exports = class BenDescription extends GameObject {
     super(
       `Ben is a very logical and analytical person who
 approaches problems in a systematic way. 
-
+ 
 He can sometimes come off as cold or distant due
 to his tendency to think before he speaks.`,
       canvas,

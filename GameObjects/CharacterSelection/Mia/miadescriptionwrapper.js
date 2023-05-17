@@ -3,6 +3,7 @@ const CharacterDescriptionIcon = require("../characterdescriptionicon");
 const MiaDescription = require("./miadescription");
 const Point = require("./../../../math/point");
 const Mia = require("./../../Characters/mia");
+const MiaAbility = require("./miaability");
 
 module.exports = class MiaDescriptionWrapper {
   gameObjects = [];
@@ -31,14 +32,22 @@ joint battles.`,
       canvas,
       14
     );
-    this.specialAbilityDescription.bounds.location = new Point(987, 228);
+    this.specialAbilityDescription.bounds =
+      this.specialAbilityDescription.bounds.centerX(
+        this.specialAbilityText.bounds
+      );
+    this.specialAbilityDescription.bounds.location.y = 228;
+
+    this.abilityIcons = new MiaAbility(canvas);
 
     this.specialAbilityComment = new GameObject(
       `You can select 1 animal.`,
       canvas,
       14
     );
-    this.specialAbilityComment.bounds.location = new Point(978, 539);
+    this.specialAbilityComment.bounds =
+      this.specialAbilityComment.bounds.centerX(this.specialAbilityText.bounds);
+    this.specialAbilityComment.bounds.location.y = 539;
 
     this.gameObjects = [
       this.description,
@@ -49,6 +58,7 @@ joint battles.`,
       this.specialAbilityText,
       this.specialAbilityDescription,
       this.specialAbilityComment,
+      this.abilityIcons,
     ];
   }
 };

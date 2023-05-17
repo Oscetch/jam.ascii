@@ -1,11 +1,13 @@
 const Mia = require("./../../Characters/mia");
 const Hoverable = require("./../../hoverable");
 const Point = require("./../../../math/point");
-const Rectangle = require("./../../../math/rectangle");
+const CardClickBackground = require("../cardclickbackground");
 
 module.exports = class MiaCard {
   items = [];
   isHovered = false;
+  #isClicking = false;
+  #clickBackground;
 
   constructor(canvas) {
     const mia = new Mia(canvas);
@@ -24,6 +26,13 @@ module.exports = class MiaCard {
     this.items.push(miaText);
 
     this.combinedBounds = mia.bounds.union(icon.bounds).union(miaText.bounds);
+
+    /*
+    this.#clickBackground = new CardClickBackground(canvas);
+    this.#clickBackground.bounds = this.#clickBackground.bounds.centerOn(
+      this.combinedBounds
+    );
+    */
   }
 
   select() {
@@ -46,6 +55,9 @@ module.exports = class MiaCard {
     for (let i = 0; i < this.items.length; i++) {
       this.items[i].render(canvas);
     }
+    if (this.#isClicking) {
+      //this.#clickBackground.render(canvas);
+    }
   }
 
   onMouseMove(point) {
@@ -60,14 +72,10 @@ module.exports = class MiaCard {
   }
 
   onMouseUp(point) {
-    for (let i = 0; i < this.items.length; i++) {
-      this.items[i].onMouseUp(point);
-    }
+    this.#isClicking = false;
   }
 
   onMouseDown(point) {
-    for (let i = 0; i < this.items.length; i++) {
-      this.items[i].onMouseDown(point);
-    }
+    this.#isClicking = this.combinedBounds.containsPoint(point);
   }
 };
