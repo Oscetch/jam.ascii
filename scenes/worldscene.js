@@ -17,9 +17,11 @@ const Mia = require("../GameObjects/Characters/mia");
 const Max = require("../GameObjects/Characters/max");
 const Ben = require("../GameObjects/Characters/ben");
 const Ava = require("../GameObjects/Characters/ava");
+const EnterPlanetDialog = require("../GameObjects/World/enterplanetdialog");
 
 module.exports = class WorldScene extends Scene {
   #items;
+  #connectedToCharacter = [];
 
   onStart() {
     this.canvas.canvas.style = "background-color: #000000";
@@ -31,6 +33,7 @@ module.exports = class WorldScene extends Scene {
     this.character = this.getCharacter();
     this.character.color = "#FFFFFF";
     this.character.bounds = this.character.bounds.centerOn(this.worldBounds);
+    this.enterPlanetDialog = new EnterPlanetDialog(this.canvas);
     window.addEventListener("keydown", (event) => {
       this.onKeyDown(event.keyCode);
     });
@@ -42,7 +45,9 @@ module.exports = class WorldScene extends Scene {
   renderInternal(deltaTime) {
     this.canvas.clear();
     this.distantStarHandler.render(this.canvas, deltaTime);
-    this.character.update(this.canvas, deltaTime);
+    if (!this.enterPlanetDialog.show) {
+      this.character.update(this.canvas, deltaTime);
+    }
 
     const characterLocation = this.character.bounds.location;
     this.character.bounds.location.x = clamp(
@@ -62,15 +67,47 @@ module.exports = class WorldScene extends Scene {
       this.camera.bounds
     );
 
+    for (let i = 0; i < this.#connectedToCharacter.length; i++) {
+      const item = this.#connectedToCharacter[i];
+      if (!item.bounds.overlaps(this.character.bounds)) {
+        this.#connectedToCharacter.splice(i, 1);
+        i--;
+      }
+    }
+
     for (let i = 0; i < this.#items.length; i++) {
       const item = this.#items[i];
       if (inclusiveBounds.overlaps(item.bounds)) {
-        item.update(this.canvas, deltaTime);
+        if (
+          item.isInteractable() &&
+          !this.isConnectedToCharacter(item) &&
+          item.bounds.overlaps(this.character.bounds)
+        ) {
+          this.#connectedToCharacter.push(item);
+          this.enterPlanetDialog.show = true;
+        }
+        if (!this.enterPlanetDialog.show) {
+          item.update(this.canvas, deltaTime);
+        }
         item.renderTranslated(this.canvas, this.camera.bounds.location);
       }
     }
 
     this.character.renderTranslated(this.canvas, this.camera.bounds.location);
+
+    if (this.enterPlanetDialog.show) {
+      this.enterPlanetDialog.render(this.canvas, deltaTime);
+    }
+  }
+
+  isConnectedToCharacter(planet) {
+    for (let i = 0; i < this.#connectedToCharacter.length; i++) {
+      const item = this.#connectedToCharacter[i];
+      if (item.id === planet.id) {
+        return true;
+      }
+    }
+    return false;
   }
 
   getCharacter() {

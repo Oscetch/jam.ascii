@@ -56,6 +56,17 @@ module.exports = class Rectangle {
   }
 
   /**
+   * @param {Point} point
+   * @returns {Rectangle}
+   */
+  centerOnPoint(point) {
+    return new Rectangle(
+      point.subtract(this.size.dividedBy(2)),
+      new Point(this.size.x, this.size.y)
+    );
+  }
+
+  /**
    * @param {Rectangle} other
    * @returns {Rectangle}
    */

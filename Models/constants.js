@@ -4,4 +4,5 @@ module.exports = {
   BEN: "BEN",
   AVA: "AVA",
   STORAGE_SELECT_CHAR_KEY: "SELECTED_CHAR",
+  STORAGE_PLANET_COUNTER: "PLANETS",
 };

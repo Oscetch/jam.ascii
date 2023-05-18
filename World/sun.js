@@ -4,6 +4,8 @@ const CanvasASCII = require("./../canvas_ascii");
 const { randomFloat, randomInt, addToAngle } = require("./../math/common");
 
 module.exports = class Sun extends GameObject {
+  isPlanet = false;
+
   /**
    * @param {Rectangle} rotationBounds
    * @param {String} ascii
@@ -36,5 +38,9 @@ module.exports = class Sun extends GameObject {
     );
 
     this.bounds.location = newCenter.subtract(this.bounds.size.dividedBy(2));
+  }
+
+  isInteractable() {
+    return false;
   }
 };

@@ -1,4 +1,5 @@
 const GameObject = require("../GameObjects/gameobject");
+const { STORAGE_PLANET_COUNTER } = require("../Models/constants");
 const CanvasASCII = require("../canvas_ascii");
 const Point = require("../math/point");
 const Rectangle = require("../math/rectangle");
@@ -21,6 +22,7 @@ module.exports = {
   build(worldWidth, worldHeight, cellSize, canvas) {
     let galaxy = [];
     var bounds = new Rectangle(new Point(), new Point());
+    localStorage.setItem(STORAGE_PLANET_COUNTER, 0);
     const info = {
       cellsCreated: 0,
       sunsCreated: 0,
