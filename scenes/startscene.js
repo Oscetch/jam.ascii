@@ -16,15 +16,12 @@ module.exports = class StartScene extends Scene {
       new Point(),
       new Point(this.canvas.canvas.width, this.canvas.canvas.height)
     );
-    const center = new Point(canvasBounds.center().x, canvasBounds.bottom());
+    const bottom = new Point(canvasBounds.center().x, canvasBounds.bottom());
     gameText.bounds.location = new Point(
-      center.x - gameText.bounds.size.x / 2,
-      center.y - gameText.bounds.size.y / 2
+      bottom.x - gameText.bounds.size.x / 2,
+      bottom.y - gameText.bounds.size.y / 2
     );
-    gameText.target = new Point(
-      gameText.bounds.location.x,
-      334 - gameText.bounds.size.y / 2
-    );
+    gameText.target = new Point(gameText.bounds.location.x, 184);
     const canvas = this.canvas;
     const items = this.#items;
     const onChangeScene = this.onChangeScene;
@@ -35,12 +32,12 @@ module.exports = class StartScene extends Scene {
         new Point()
       );
       description1.bounds.location = new Point(
-        center.x - description1.bounds.size.x / 2,
-        center.y - description1.bounds.size.y / 2
+        bottom.x - description1.bounds.size.x / 2,
+        bottom.y - description1.bounds.size.y / 2
       );
       description1.color = "#FFFFFF";
 
-      description1.target = new Point(description1.bounds.location.x, 387);
+      description1.target = new Point(description1.bounds.location.x, 245);
       description1.onTargetReached = function () {
         const description2 = new TargetMoving(
           "Their spaceship works, but it can no\nlonger reach hyperspace. The people are\ncalled: Mia, Max, Ben and Ava.",
@@ -48,10 +45,10 @@ module.exports = class StartScene extends Scene {
           new Point()
         );
         description2.bounds.location = new Point(
-          center.x - description1.bounds.size.x / 2,
-          center.y - description1.bounds.size.y / 2
+          bottom.x - description1.bounds.size.x / 2,
+          bottom.y - description1.bounds.size.y / 2
         );
-        description2.target = new Point(description2.bounds.location.x, 459);
+        description2.target = new Point(description2.bounds.location.x, 311);
         description2.color = "#FFFFFF";
 
         description2.onTargetReached = function () {
@@ -59,7 +56,7 @@ module.exports = class StartScene extends Scene {
             onChangeScene(new SelectCharacterScene(canvas, onChangeScene))
           );
           startButton.updatePosition(
-            new Point(center.x - startButton.background.bounds.size.x / 2, 690)
+            new Point(bottom.x - startButton.background.bounds.size.x / 2, 429)
           );
           items.push(startButton);
 

@@ -12,25 +12,18 @@ module.exports = class MaxDescriptionWrapper {
     this.description = new MaxDescription(canvas);
     this.icon = new CharacterDescriptionIcon(canvas, "");
 
-    this.titleText = new GameObject("MAX", canvas, 64);
-    this.titleText.bounds.location = new Point(624.12, 80);
+    this.titleText = new GameObject("MAX", canvas, 32);
+    this.titleText.bounds.location = new Point(352, 48);
 
     this.bigIcon = new Max(canvas);
-    this.bigIcon.setFontSize(32, canvas);
-    this.bigIcon.bounds.location = new Point(607.25, 250);
+    this.bigIcon.setFontSize(16, canvas);
+    this.bigIcon.bounds.location = new Point(328, 136);
 
-    this.specialAbiliaIcon = new GameObject(`\n`, canvas, 24);
-    this.specialAbiliaIcon.bounds.location = new Point(1145, 86);
+    this.specialAbiliaIcon = new GameObject(`\n`, canvas, 14);
+    this.specialAbiliaIcon.bounds.location = new Point(636.15, 51.66);
 
-    this.specialAbilityText = new GameObject("Special ability", canvas, 24);
-    this.specialAbilityText.bounds.location = new Point(989, 172);
-
-    this.specialAbilityDescription = new GameObject(`???`, canvas, 14);
-    this.specialAbilityDescription.bounds =
-      this.specialAbilityDescription.bounds.centerX(
-        this.specialAbilityText.bounds
-      );
-    this.specialAbilityDescription.bounds.location.y = 228;
+    this.specialAbilityText = new GameObject("Special ability", canvas, 14);
+    this.specialAbilityText.bounds.location = new Point(540, 99);
 
     this.abilityIcons = new MaxAbility(canvas);
 
@@ -41,7 +34,6 @@ module.exports = class MaxDescriptionWrapper {
       this.bigIcon,
       this.specialAbiliaIcon,
       this.specialAbilityText,
-      this.specialAbilityDescription,
       this.abilityIcons,
     ];
   }

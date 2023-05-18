@@ -7,10 +7,10 @@ module.exports = class SelectButton extends Hoverable {
     const ascii = `
 ▎ SELECT 
 ▂▂▂▂▂▂▂▂`;
-    super(ascii, canvas);
+    super(ascii, canvas, 13);
     this.hoverColor = "#5722EE";
     this.regularColor = "#FFFFFF";
-    this.bounds.location = new Point(1120, 825);
+    this.bounds.location = new Point(626, 528);
     this.clicked = clicked;
   }
 

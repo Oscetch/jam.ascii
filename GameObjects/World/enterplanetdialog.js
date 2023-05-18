@@ -7,27 +7,24 @@ module.exports = class EnterPlanetDialog {
 
   constructor(canvas, onInvestigate) {
     this.background = new BottomPanelBackground(canvas);
-    this.background.bounds.location = new Point(0, 704);
     this.background.color = "#FFFFFF";
+
+    const split = this.background.bounds.split();
+    const topQuad = split.topRight.union(split.topLeft);
+    const bottomQuad = split.bottomRight.union(split.bottomLeft);
 
     this.investigateButton = new Button("INVESTIGATE", canvas, onInvestigate);
     this.investigateButton.hoverColor = "#5722EE";
     this.investigateButton.regularColor = "#000000";
-
-    const centerInvestigatePosition = new Point(1120 + 240 / 2, 760 + 72 / 2);
-    this.investigateButton.bounds = this.investigateButton.bounds.centerOnPoint(
-      centerInvestigatePosition
-    );
+    this.investigateButton.bounds =
+      this.investigateButton.bounds.centerOn(topQuad);
 
     this.cancelButton = new Button("   LEAVE   ", canvas, () => {
       this.show = false;
     });
     this.cancelButton.hoverColor = "#5722EE";
     this.cancelButton.regularColor = "#000000";
-
-    const centerCancelPosition = new Point(1120 + 240 / 2, 856 + 72 / 2);
-    this.cancelButton.bounds =
-      this.cancelButton.bounds.centerOnPoint(centerCancelPosition);
+    this.cancelButton.bounds = this.cancelButton.bounds.centerOn(bottomQuad);
 
     canvas.canvas.onmousemove = (event) => {
       const point = this.getMousePosition(canvas, event);

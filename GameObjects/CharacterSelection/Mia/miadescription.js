@@ -6,13 +6,18 @@ module.exports = class MiaDescription extends GameObject {
     super(
       `Mia is a natural leader.
 
-She has a soft spot for animals and can often be
-found trying to befriend the asteroid's local 
-creatures.`,
+She has a soft spot for animals
+and can often be found trying
+to befriend the asteroid's
+local creatures.`,
       canvas,
-      16
+      14
     );
-    this.bounds.location = new Point(224, 792);
+    this.bounds.location = new Point(150, 487);
     this.color = "#FFFFFF";
+  }
+
+  render(canvas) {
+    super.render(canvas);
   }
 };

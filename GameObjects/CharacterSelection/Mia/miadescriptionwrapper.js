@@ -13,41 +13,42 @@ module.exports = class MiaDescriptionWrapper {
 
     this.icon = new CharacterDescriptionIcon(canvas, "");
 
-    this.titleText = new GameObject("MIA", canvas, 64);
-    this.titleText.bounds.location = new Point(624.12, 80);
+    this.titleText = new GameObject("MIA", canvas, 32);
+    this.titleText.bounds.location = new Point(352, 48);
 
     this.bigIcon = new Mia(canvas);
-    this.bigIcon.setFontSize(32, canvas);
-    this.bigIcon.bounds.location = new Point(607.25, 250);
+    this.bigIcon.setFontSize(16, canvas);
+    this.bigIcon.bounds.location = new Point(337.87, 132.33);
 
-    this.specialAbiliaIcon = new GameObject(`\n`, canvas, 24);
-    this.specialAbiliaIcon.bounds.location = new Point(1145, 86);
+    this.specialAbiliaIcon = new GameObject(`\n`, canvas, 14);
+    this.specialAbiliaIcon.bounds.location = new Point(636.15, 43.66);
 
-    this.specialAbilityText = new GameObject("Special ability", canvas, 24);
-    this.specialAbilityText.bounds.location = new Point(989, 172);
+    this.specialAbilityText = new GameObject("Special ability", canvas, 14);
+    this.specialAbilityText.bounds.location = new Point(540, 91);
 
     this.specialAbilityDescription = new GameObject(
-      `Mia can tame animals for
-joint battles.`,
+      `Mia can tame
+animals for joint
+battles.`,
       canvas,
-      14
+      12
     );
-    this.specialAbilityDescription.bounds =
-      this.specialAbilityDescription.bounds.centerX(
-        this.specialAbilityText.bounds
-      );
-    this.specialAbilityDescription.bounds.location.y = 228;
+    this.specialAbilityDescription.bounds.location.x =
+      this.specialAbilityText.bounds.location.x;
+    this.specialAbilityDescription.bounds.location.y = 129;
 
     this.abilityIcons = new MiaAbility(canvas);
 
     this.specialAbilityComment = new GameObject(
-      `You can select 1 animal.`,
+      `You will have a
+companion animal.`,
       canvas,
-      14
+      12
     );
-    this.specialAbilityComment.bounds =
-      this.specialAbilityComment.bounds.centerX(this.specialAbilityText.bounds);
-    this.specialAbilityComment.bounds.location.y = 539;
+
+    this.specialAbilityComment.bounds.location.x =
+      this.specialAbilityText.bounds.location.x;
+    this.specialAbilityComment.bounds.location.y = 336.83;
 
     this.gameObjects = [
       this.description,

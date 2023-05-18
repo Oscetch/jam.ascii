@@ -6,13 +6,13 @@ module.exports = class AvaDescription extends GameObject {
     super(
       `Ava is a creative and intuitive person.
 
-She can be a bit of a dreamer and sometimes gets
-lost in her own thoughts, but she has a strong
-sense of empathy and cares deeply for others.`,
+She has a strong sense of
+empathy and cares deeply for
+others.`,
       canvas,
-      16
+      14
     );
-    this.bounds.location = new Point(224, 792);
+    this.bounds.location = new Point(150, 487);
     this.color = "#FFFFFF";
   }
 };

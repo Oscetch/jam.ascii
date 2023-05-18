@@ -8,15 +8,15 @@ module.exports = class AvaCard {
 
   constructor(canvas) {
     const ava = new Ava(canvas);
-    ava.bounds.location = new Point(98, 544);
+    ava.bounds.location = new Point(62, 320);
 
     const icon = new Hoverable("", canvas, 16);
     icon.hoverColor = "#5722EE";
-    icon.bounds.location = new Point(230, 580);
+    icon.bounds.location = new Point(150, 340);
 
     const text = new Hoverable("AVA", canvas, 16);
     text.hoverColor = "#5722EE";
-    text.bounds.location = new Point(254, 580);
+    text.bounds.location = new Point(174, 340);
 
     this.items.push(ava);
     this.items.push(icon);

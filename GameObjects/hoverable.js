@@ -4,7 +4,7 @@ module.exports = class Hoverable extends GameObject {
   hoverColor = "#5722EE";
   regularColor = "#000000";
 
-  constructor(ascii, canvas, fontSize = 20) {
+  constructor(ascii, canvas, fontSize = 13) {
     super(ascii, canvas, fontSize);
     this.mouseListener = true;
   }

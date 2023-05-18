@@ -2,8 +2,19 @@
   font-family: "C64 Pro Mono";
   src: url("C64_Pro_Mono-STYLE.otf") format("opentype");
 }
-
+html,
+body,
+div,
+canvas {
+  margin: 0;
+  padding: 0;
+}
 canvas {
   font-family: "C64 Pro Mono", monospace;
   font-size: 16px;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

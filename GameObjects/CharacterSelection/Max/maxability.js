@@ -6,14 +6,14 @@ module.exports = class MaxAbility extends GameObject {
 
   constructor(canvas) {
     super("", canvas);
-    const leftIcon = new GameObject("", canvas, 63);
-    leftIcon.bounds.location = new Point(1034, 327);
+    const leftIcon = new GameObject("", canvas, 32);
+    leftIcon.bounds.location = new Point(586, 187);
 
-    const centerIcon = new GameObject("", canvas, 63);
-    centerIcon.bounds.location = new Point(1129, 382);
+    const centerIcon = new GameObject("", canvas, 32);
+    centerIcon.bounds.location = new Point(634, 207);
 
-    const rightIcon = new GameObject("", canvas, 63);
-    rightIcon.bounds.location = new Point(1223, 327);
+    const rightIcon = new GameObject("", canvas, 32);
+    rightIcon.bounds.location = new Point(682, 187);
 
     this.#items = [leftIcon, centerIcon, rightIcon];
   }

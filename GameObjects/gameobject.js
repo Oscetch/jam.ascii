@@ -17,7 +17,7 @@ module.exports = class GameObject {
    * @param {CanvasASCII} canvas
    * @param {Number} fontSize
    */
-  constructor(ascii, canvas, fontSize = 20) {
+  constructor(ascii, canvas, fontSize = 14) {
     this.fontSize = fontSize;
     canvas.setFontSize(this.fontSize);
     this.backingArray = ascii.split("\n");

@@ -20,7 +20,6 @@ module.exports = class CharacterDescription {
 
   constructor(canvas, onSelected) {
     this.background = new BottomPanelBackground(canvas);
-    this.background.bounds.location = new Point(0, 704);
     this.selectButton = new SelectButton(canvas, () => {
       switch (this.#selected) {
         case 0:
@@ -50,11 +49,11 @@ module.exports = class CharacterDescription {
     this.#items.push(new BenCard(canvas));
     this.#items.push(new AvaCard(canvas));
 
-    this.selectionIndicator = new GameObject("", canvas, 32);
+    this.selectionIndicator = new GameObject("", canvas, 16);
     this.selectionIndicator.color = "#5722EE";
     this.selectionIndicator.bounds.location.x =
       miaCard.items[0].bounds.location.x -
-      46 -
+      14 -
       this.selectionIndicator.bounds.size.x;
     const selected = this.#items[this.#selected].items[0].bounds.center().y;
     const indicatorHeight = this.selectionIndicator.bounds.size.y;

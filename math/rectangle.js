@@ -83,7 +83,7 @@ module.exports = class Rectangle {
    */
   centerY(other) {
     return new Rectangle(
-      new Point(this.location.y, other.center().y - this.size.y / 2),
+      new Point(this.location.x, other.center().y - this.size.y / 2),
       new Point(this.size.x, this.size.y)
     );
   }

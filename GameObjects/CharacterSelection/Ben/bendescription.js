@@ -4,15 +4,14 @@ var Point = require("../../../math/point");
 module.exports = class BenDescription extends GameObject {
   constructor(canvas) {
     super(
-      `Ben is a very logical and analytical person who
-approaches problems in a systematic way. 
- 
-He can sometimes come off as cold or distant due
-to his tendency to think before he speaks.`,
+      `Ben is a very logical and
+analytical person who
+approaches problems in a
+systematic way. `,
       canvas,
-      16
+      14
     );
-    this.bounds.location = new Point(224, 792);
+    this.bounds.location = new Point(150, 504);
     this.color = "#FFFFFF";
   }
 };

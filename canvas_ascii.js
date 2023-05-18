@@ -3,8 +3,8 @@ const Point = require("./math/point");
 module.exports = class CanvasASCII {
   constructor(canvas) {
     this.canvas = canvas;
-    this.canvas.width = 1440;
-    this.canvas.height = 1024;
+    this.canvas.width = 800;
+    this.canvas.height = 640;
     this.ctx = canvas.getContext("2d");
     this.charWidth = 10;
     this.charHeight = 20;
@@ -51,9 +51,13 @@ module.exports = class CanvasASCII {
       const text = texts[i];
       this.ctx.fillText(text, x, y + yOffset);
       const measurement = this.ctx.measureText(text);
-      yOffset +=
-        measurement.actualBoundingBoxAscent +
-        measurement.actualBoundingBoxDescent;
+      if (text.length === 0) {
+        yOffset += measurement.actualBoundingBoxDescent;
+      } else {
+        yOffset +=
+          measurement.actualBoundingBoxAscent +
+          measurement.actualBoundingBoxDescent;
+      }
     }
   }
 

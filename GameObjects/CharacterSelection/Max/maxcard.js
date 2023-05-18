@@ -8,15 +8,15 @@ module.exports = class MaxCard {
 
   constructor(canvas) {
     const max = new Max(canvas);
-    max.bounds.location = new Point(98, 240);
+    max.bounds.location = new Point(62, 144);
 
     const icon = new Hoverable("", canvas, 16);
     icon.hoverColor = "#5722EE";
-    icon.bounds.location = new Point(230, 276);
+    icon.bounds.location = new Point(150, 164);
 
     const text = new Hoverable("MAX", canvas, 16);
     text.hoverColor = "#5722EE";
-    text.bounds.location = new Point(254, 276);
+    text.bounds.location = new Point(174, 164);
 
     this.items.push(max);
     this.items.push(icon);

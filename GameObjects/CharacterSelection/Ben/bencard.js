@@ -8,15 +8,15 @@ module.exports = class BenCard {
 
   constructor(canvas) {
     const ben = new Ben(canvas);
-    ben.bounds.location = new Point(122, 392);
+    ben.bounds.location = new Point(78, 232);
 
     const icon = new Hoverable("", canvas, 16);
     icon.hoverColor = "#5722EE";
-    icon.bounds.location = new Point(230, 428);
+    icon.bounds.location = new Point(150, 252);
 
     const text = new Hoverable("BEN", canvas, 16);
     text.hoverColor = "#5722EE";
-    text.bounds.location = new Point(254, 428);
+    text.bounds.location = new Point(174, 252);
 
     this.items.push(ben);
     this.items.push(icon);
