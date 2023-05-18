@@ -1,4 +1,4 @@
-const CharacterDescriptionBackground = require("./characterdescriptionbackground");
+const BottomPanelBackground = require("../bottompanelbackground");
 const Point = require("../../math/point");
 const SelectButton = require("./selectbutton");
 const AvaDescriptionWrapper = require("./Ava/avadescriptionwrapper");
@@ -19,18 +19,22 @@ module.exports = class CharacterDescription {
   #isHovered = false;
 
   constructor(canvas, onSelected) {
-    this.background = new CharacterDescriptionBackground(canvas);
+    this.background = new BottomPanelBackground(canvas);
     this.background.bounds.location = new Point(0, 704);
     this.selectButton = new SelectButton(canvas, () => {
       switch (this.#selected) {
         case 0:
           onSelected(MIA);
+          break;
         case 1:
           onSelected(MAX);
+          break;
         case 2:
           onSelected(BEN);
+          break;
         case 3:
           onSelected(AVA);
+          break;
       }
     });
     this.#selections = [

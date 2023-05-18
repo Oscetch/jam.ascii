@@ -1,6 +1,6 @@
 var GameObject = require("./gameobject");
 
-module.exports = class Background extends GameObject {
+module.exports = class DynamicBackground extends GameObject {
   constructor(overlay, canvas, fontSize = 20) {
     let maxWidth = 0;
     let ascii = "";

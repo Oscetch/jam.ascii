@@ -6,18 +6,31 @@ const Rectangle = require("../math/rectangle");
 const Point = require("../math/point");
 const { KEY_CODE, clamp } = require("./../math/common");
 const DistantStarHandler = require("../World/distantstarhandler");
+const {
+  STORAGE_SELECT_CHAR_KEY,
+  MIA,
+  MAX,
+  BEN,
+  AVA,
+} = require("../Models/constants");
+const Mia = require("../GameObjects/Characters/mia");
+const Max = require("../GameObjects/Characters/max");
+const Ben = require("../GameObjects/Characters/ben");
+const Ava = require("../GameObjects/Characters/ava");
 
 module.exports = class WorldScene extends Scene {
   #items;
-  #cameraMovementSpeed = 1000;
 
   onStart() {
     this.canvas.canvas.style = "background-color: #000000";
     const worldAndBounds = build(10_000, 10_000, 2000, this.canvas);
     this.#items = worldAndBounds.galaxy;
-    this.cameraBounds = worldAndBounds.bounds;
+    this.worldBounds = worldAndBounds.bounds;
     this.camera = new Camera();
     this.distantStarHandler = new DistantStarHandler(this.camera);
+    this.character = this.getCharacter();
+    this.character.color = "#FFFFFF";
+    this.character.bounds = this.character.bounds.centerOn(this.worldBounds);
     window.addEventListener("keydown", (event) => {
       this.onKeyDown(event.keyCode);
     });
@@ -29,20 +42,21 @@ module.exports = class WorldScene extends Scene {
   renderInternal(deltaTime) {
     this.canvas.clear();
     this.distantStarHandler.render(this.canvas, deltaTime);
-    this.camera.bounds.location = this.camera.bounds.location.add(
-      this.camera.velocity.multiplyBy(deltaTime)
+    this.character.update(this.canvas, deltaTime);
+
+    const characterLocation = this.character.bounds.location;
+    this.character.bounds.location.x = clamp(
+      characterLocation.x,
+      this.worldBounds.left(),
+      this.worldBounds.right()
     );
-    const cameraLocation = this.camera.bounds.location;
-    this.camera.bounds.location.x = clamp(
-      cameraLocation.x,
-      this.cameraBounds.left(),
-      this.cameraBounds.right()
+    this.character.bounds.location.y = clamp(
+      characterLocation.y,
+      this.worldBounds.top(),
+      this.worldBounds.bottom()
     );
-    this.camera.bounds.location.y = clamp(
-      cameraLocation.y,
-      this.cameraBounds.top(),
-      this.cameraBounds.bottom()
-    );
+    this.camera.followTarget = this.character.bounds;
+    this.camera.update(deltaTime);
     const inclusiveSize = this.camera.bounds.size.multiplyBy(2);
     const inclusiveBounds = new Rectangle(new Point(), inclusiveSize).centerOn(
       this.camera.bounds
@@ -55,25 +69,41 @@ module.exports = class WorldScene extends Scene {
         item.renderTranslated(this.canvas, this.camera.bounds.location);
       }
     }
+
+    this.character.renderTranslated(this.canvas, this.camera.bounds.location);
+  }
+
+  getCharacter() {
+    const mainChar = localStorage.getItem(STORAGE_SELECT_CHAR_KEY);
+    switch (mainChar) {
+      case MIA:
+        return new Mia(this.canvas);
+      case MAX:
+        return new Max(this.canvas);
+      case BEN:
+        return new Ben(this.canvas);
+      case AVA:
+        return new Ava(this.canvas);
+    }
   }
 
   onKeyDown(keyCode) {
     switch (keyCode) {
       case KEY_CODE.LEFT:
       case KEY_CODE.A_KEY:
-        this.camera.velocity.x = -this.#cameraMovementSpeed;
+        this.character.velocity.x = -this.character.movementSpeed;
         break;
       case KEY_CODE.RIGHT:
       case KEY_CODE.D_KEY:
-        this.camera.velocity.x = this.#cameraMovementSpeed;
+        this.character.velocity.x = this.character.movementSpeed;
         break;
       case KEY_CODE.UP:
       case KEY_CODE.W_KEY:
-        this.camera.velocity.y = -this.#cameraMovementSpeed;
+        this.character.velocity.y = -this.character.movementSpeed;
         break;
       case KEY_CODE.DOWN:
       case KEY_CODE.S_KEY:
-        this.camera.velocity.y = this.#cameraMovementSpeed;
+        this.character.velocity.y = this.character.movementSpeed;
         break;
     }
   }
@@ -84,13 +114,13 @@ module.exports = class WorldScene extends Scene {
       case KEY_CODE.A_KEY:
       case KEY_CODE.RIGHT:
       case KEY_CODE.D_KEY:
-        this.camera.velocity.x = 0;
+        this.character.velocity.x = 0;
         break;
       case KEY_CODE.UP:
       case KEY_CODE.W_KEY:
       case KEY_CODE.DOWN:
       case KEY_CODE.S_KEY:
-        this.camera.velocity.y = 0;
+        this.character.velocity.y = 0;
         break;
     }
   }

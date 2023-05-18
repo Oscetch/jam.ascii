@@ -39,10 +39,9 @@ module.exports = class Point {
    * @returns {Point}
    */
   moveInDirection(angle, distance) {
-    return new Point(
-      this.x + distance * Math.cos(angle),
-      this.y + distance * Math.sin(angle)
-    );
+    const x = this.x + distance * Math.cos(angle);
+    const y = this.y + distance * Math.sin(angle);
+    return new Point(x, y);
   }
 
   /**

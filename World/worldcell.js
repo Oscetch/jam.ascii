@@ -13,7 +13,7 @@ module.exports = {
    * @returns {GameObject[]}
    */
   build(bounds, canvas) {
-    const sunSize = this.toOdd(randomInt(3, 10));
+    const sunSize = this.toOdd(randomInt(5, 12));
     const sun = new Sun(bounds, this.createPlanetAscii(sunSize, "@"), canvas);
     sun.color = "#FFFF00";
     let system = [sun];
@@ -33,7 +33,7 @@ module.exports = {
     for (let i = 0; i < planetCount; i++) {
       const planet = new Planet(
         sun,
-        this.createPlanetAscii(this.toOdd(randomInt(1, sunSize - 2)), "#"),
+        this.createPlanetAscii(this.toOdd(randomInt(3, sunSize - 2)), "#"),
         canvas,
         planetDistance * (i + 1)
       );

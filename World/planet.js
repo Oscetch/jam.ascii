@@ -4,6 +4,8 @@ const Sun = require("./sun");
 const { randomFloat, addToAngle, PI2, randomInt } = require("./../math/common");
 
 module.exports = class Planet extends GameObject {
+  isVisited = false;
+
   /**
    * @param {Sun} sun
    * @param {String} ascii
@@ -20,6 +22,7 @@ module.exports = class Planet extends GameObject {
     }
     this.currentAngle = randomFloat(0, PI2);
     this.sun = sun;
+    this.update(canvas, 0);
   }
 
   update(canvas, deltaTime) {

@@ -8,8 +8,9 @@ module.exports = class GameObject {
   isClicked = false;
   isMouseOver = false;
   mouseListener = false;
+  flip = false;
   bounds;
-  #fontSize;
+  fontSize;
 
   /**
    * @param {String} ascii
@@ -17,15 +18,15 @@ module.exports = class GameObject {
    * @param {Number} fontSize
    */
   constructor(ascii, canvas, fontSize = 20) {
-    this.#fontSize = fontSize;
-    canvas.setFontSize(this.#fontSize);
+    this.fontSize = fontSize;
+    canvas.setFontSize(this.fontSize);
     this.backingArray = ascii.split("\n");
     this.bounds = this.getBounds(this.backingArray, canvas);
   }
 
   setFontSize(size, canvas) {
-    this.#fontSize = size;
-    canvas.setFontSize(this.#fontSize);
+    this.fontSize = size;
+    canvas.setFontSize(this.fontSize);
     this.bounds = this.getBounds(
       this.backingArray,
       canvas,
@@ -57,16 +58,24 @@ module.exports = class GameObject {
   update(canvas, deltaTime) {}
 
   render(canvas) {
-    canvas.setFontSize(this.#fontSize);
-    canvas.setFontColor(this.color);
-    let center = this.bounds.location;
-    canvas.drawTexts(this.backingArray, center.x, center.y);
+    this.renderTranslated(canvas, new Point());
   }
+  /**
+   *
+   * @param {CanvasASCII} canvas
+   * @param {Point} offset
+   */
   renderTranslated(canvas, offset) {
-    canvas.setFontSize(this.#fontSize);
+    canvas.ctx.save();
+    canvas.setFontSize(this.fontSize);
     canvas.setFontColor(this.color);
     let center = this.bounds.location.subtract(offset);
+    if (this.flip) {
+      canvas.ctx.scale(-1, 1);
+      center.x = -center.x - this.bounds.size.x;
+    }
     canvas.drawTexts(this.backingArray, center.x, center.y);
+    canvas.ctx.restore();
   }
 
   /**

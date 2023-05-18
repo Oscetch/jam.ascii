@@ -1,4 +1,4 @@
-var GameObject = require("../gameobject");
+var GameObject = require("./gameobject");
 
 module.exports = class CharacterDescriptionBackground extends GameObject {
   constructor(canvas) {

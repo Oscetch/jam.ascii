@@ -1,6 +1,6 @@
-const GameObject = require("../gameobject");
+const CharacterBase = require("./characterbase");
 
-module.exports = class Ben extends GameObject {
+module.exports = class Ben extends CharacterBase {
   constructor(canvas) {
     super(
       ` 
@@ -11,8 +11,7 @@ module.exports = class Ben extends GameObject {
 ▎  Ù
 ◥ÛÛ◤
   `,
-      canvas,
-      12
+      canvas
     );
   }
 };
