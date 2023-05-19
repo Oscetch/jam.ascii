@@ -15,7 +15,7 @@ module.exports = {
   build(bounds, canvas) {
     const sunSize = this.toOdd(randomInt(5, 12));
     const sun = new Sun(bounds, this.createPlanetAscii(sunSize, "@"), canvas);
-    sun.color = "#FFFF00";
+    sun.color = lerpColor("#FFFF00", "#FFA500", (sunSize - 5) / 6);
     let system = [sun];
     const planetCount = randomInt(0, 9);
     const split = bounds.split();

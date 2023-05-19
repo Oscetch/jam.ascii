@@ -1,30 +1,29 @@
 const Scene = require("./scene");
 const { build } = require("./../World/worldbuilder");
-const GameObject = require("./../GameObjects/gameobject");
 const Camera = require("../camera");
 const Rectangle = require("../math/rectangle");
 const Point = require("../math/point");
 const { KEY_CODE, clamp } = require("./../math/common");
 const DistantStarHandler = require("../World/distantstarhandler");
 const {
-  STORAGE_SELECT_CHAR_KEY,
   MIA,
   MAX,
   BEN,
   AVA,
+  SCENE_KEY_BATTLE_START,
 } = require("../Models/constants");
-const Mia = require("../GameObjects/Characters/mia");
-const Max = require("../GameObjects/Characters/max");
-const Ben = require("../GameObjects/Characters/ben");
-const Ava = require("../GameObjects/Characters/ava");
+const internalMemory = require("../Models/internalmemory");
 const EnterPlanetDialog = require("../GameObjects/World/enterplanetdialog");
+const MiaShip = require("../GameObjects/Characters/miaship");
+const MaxShip = require("../GameObjects/Characters/maxship");
+const BenShip = require("../GameObjects/Characters/benship");
+const AvaShip = require("../GameObjects/Characters/avaship");
 
 module.exports = class WorldScene extends Scene {
   #items;
   #connectedToCharacter = [];
 
   onStart() {
-    this.canvas.canvas.style = "background-color: #000000";
     const worldAndBounds = build(10_000, 10_000, 2000, this.canvas);
     this.#items = worldAndBounds.galaxy;
     this.worldBounds = worldAndBounds.bounds;
@@ -33,12 +32,9 @@ module.exports = class WorldScene extends Scene {
     this.character = this.getCharacter();
     this.character.color = "#FFFFFF";
     this.character.bounds = this.character.bounds.centerOn(this.worldBounds);
-    this.enterPlanetDialog = new EnterPlanetDialog(this.canvas);
-    window.addEventListener("keydown", (event) => {
-      this.onKeyDown(event.keyCode);
-    });
-    window.addEventListener("keyup", (event) => {
-      this.onKeyUp(event.keyCode);
+    this.enterPlanetDialog = new EnterPlanetDialog(this.canvas, () => {
+      this.enterPlanetDialog.show = false;
+      this.onChangeScene(SCENE_KEY_BATTLE_START);
     });
   }
 
@@ -85,6 +81,7 @@ module.exports = class WorldScene extends Scene {
         ) {
           this.#connectedToCharacter.push(item);
           this.enterPlanetDialog.show = true;
+          internalMemory.visitingPlanet = item;
         }
         if (!this.enterPlanetDialog.show) {
           item.update(this.canvas, deltaTime);
@@ -111,17 +108,33 @@ module.exports = class WorldScene extends Scene {
   }
 
   getCharacter() {
-    const mainChar = localStorage.getItem(STORAGE_SELECT_CHAR_KEY);
-    switch (mainChar) {
-      case MIA:
-        return new Mia(this.canvas);
-      case MAX:
-        return new Max(this.canvas);
-      case BEN:
-        return new Ben(this.canvas);
-      case AVA:
-        return new Ava(this.canvas);
+    for (let i = 0; i < internalMemory.team.length; i++) {
+      const char = internalMemory.team[i];
+      if (char.isMainCharacter) {
+        switch (char.name) {
+          case MIA:
+            return new MiaShip(this.canvas);
+          case MAX:
+            return new MaxShip(this.canvas);
+          case BEN:
+            return new BenShip(this.canvas);
+          case AVA:
+            return new AvaShip(this.canvas);
+        }
+      }
     }
+  }
+
+  onMouseDown(point) {
+    this.enterPlanetDialog.onMouseDown(point);
+  }
+
+  onMouseUp(point) {
+    this.enterPlanetDialog.onMouseUp(point);
+  }
+
+  onMouseMove(point) {
+    this.enterPlanetDialog.onMouseMove(point);
   }
 
   onKeyDown(keyCode) {

@@ -1,14 +1,80 @@
-var CanvasASCII = require("./canvas_ascii.js");
-var StartScene = require("./scenes/startscene.js");
+const CanvasASCII = require("./canvas_ascii.js");
+const StartScene = require("./scenes/startscene.js");
+const SelectCharacterScene = require("./scenes/selectcharacterscene.js");
+const WorldScene = require("./scenes/worldscene.js");
+const {
+  SCENE_KEY_START,
+  SCENE_KEY_SELECT_CHARACTER,
+  SCENE_KEY_WORLD,
+  SCENE_KEY_BATTLE_START,
+  SCENE_KEY_BATTLE_INTERLUDE,
+  SCENE_KEY_BATTLE,
+} = require("./Models/constants.js");
+const BattleStartScene = require("./scenes/battlestartscene.js");
+const BattleInterludeScene = require("./scenes/battleinterludescene.js");
+const BattleScene = require("./scenes/battlescene.js");
 
+const scenes = {};
+var scene;
 var canvasASCII = new CanvasASCII(document.getElementById("gameCanvas"));
-var scene = new StartScene(canvasASCII, changeScene);
-scene.onStart();
+changeScene(SCENE_KEY_START);
 
-function changeScene(newScene) {
-  scene.onEnd();
-  scene = newScene;
-  scene.onStart();
+function getScene(sceneIndex) {
+  switch (sceneIndex) {
+    case SCENE_KEY_START:
+      if (!scenes.start) {
+        scenes.start = new StartScene(canvasASCII, changeScene);
+        scenes.start.onStart();
+      }
+      return scenes.start;
+    case SCENE_KEY_SELECT_CHARACTER:
+      if (!scenes.selectCharacter) {
+        scenes.selectCharacter = new SelectCharacterScene(
+          canvasASCII,
+          changeScene
+        );
+        scenes.selectCharacter.onStart();
+      }
+      return scenes.selectCharacter;
+    case SCENE_KEY_WORLD:
+      if (!scenes.world) {
+        scenes.world = new WorldScene(canvasASCII, changeScene);
+        scenes.world.onStart();
+      }
+      return scenes.world;
+    case SCENE_KEY_BATTLE_START:
+      const battleStart = new BattleStartScene(canvasASCII, changeScene);
+      battleStart.onStart();
+      return battleStart;
+    case SCENE_KEY_BATTLE_INTERLUDE:
+      const battleInterlude = new BattleInterludeScene(
+        canvasASCII,
+        changeScene
+      );
+      battleInterlude.onStart();
+      return battleInterlude;
+    case SCENE_KEY_BATTLE:
+      const battleScene = new BattleScene(canvasASCII, changeScene);
+      battleScene.onStart();
+      return battleScene;
+  }
+}
+
+function changeScene(sceneIndex) {
+  if (scene) {
+    scene.onEnd();
+  }
+  scene = getScene(sceneIndex);
+  canvasASCII.registerMouseDownEvent((point) => scene.onMouseDown(point));
+  canvasASCII.registerMouseUpEvent((point) => scene.onMouseUp(point));
+  canvasASCII.registerMouseMoveEvent((point) => scene.onMouseMove(point));
+  window.addEventListener("keydown", (event) => {
+    scene.onKeyDown(event.keyCode);
+  });
+  window.addEventListener("keyup", (event) => {
+    scene.onKeyUp(event.keyCode);
+  });
+  canvasASCII.canvas.style = "background-color: " + scene.backgroundColor;
 }
 
 function gameLoop() {

@@ -16,5 +16,6 @@ well`,
     );
     this.bounds.location = new Point(150, 481);
     this.color = "#FFFFFF";
+    this.lineHeight = 7;
   }
 };

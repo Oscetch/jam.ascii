@@ -1,7 +1,7 @@
 var GameObject = require("./gameobject");
 
 module.exports = class Hoverable extends GameObject {
-  hoverColor = "#5722EE";
+  hoverColor = "#AC91F8";
   regularColor = "#000000";
 
   constructor(ascii, canvas, fontSize = 13) {

@@ -33,6 +33,7 @@ battles.`,
       canvas,
       12
     );
+    this.specialAbilityDescription.lineHeight = 6;
     this.specialAbilityDescription.bounds.location.x =
       this.specialAbilityText.bounds.location.x;
     this.specialAbilityDescription.bounds.location.y = 129;
@@ -46,6 +47,7 @@ companion animal.`,
       12
     );
 
+    this.specialAbilityComment.lineHeight = 6;
     this.specialAbilityComment.bounds.location.x =
       this.specialAbilityText.bounds.location.x;
     this.specialAbilityComment.bounds.location.y = 336.83;

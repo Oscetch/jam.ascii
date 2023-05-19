@@ -42,6 +42,7 @@ module.exports = {
         info.planetsCreated += system.length - 1;
       }
     }
+
     console.log(info);
     return {
       bounds,

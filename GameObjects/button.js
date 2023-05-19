@@ -1,7 +1,7 @@
 const Hoverable = require("./hoverable");
 
 module.exports = class Button extends Hoverable {
-  constructor(text, canvas, clicked) {
+  constructor(text, canvas, clicked, fontSize = 13) {
     const topStart = "";
     const topEnd = "\n";
     const topFill = "";
@@ -19,7 +19,7 @@ module.exports = class Button extends Hoverable {
       ascii += bottomFill;
     }
     ascii += bottomEnd;
-    super(ascii, canvas);
+    super(ascii, canvas, fontSize);
 
     this.clicked = clicked;
   }

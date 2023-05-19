@@ -5,8 +5,8 @@ module.exports = class CharacterBase extends GameObject {
   velocity = new Point();
   movementSpeed = 1000;
 
-  constructor(ascii, canvas) {
-    super(ascii, canvas, 8);
+  constructor(ascii, canvas, fontSize = 8) {
+    super(ascii, canvas, fontSize);
   }
 
   update(canvas, deltaTime) {

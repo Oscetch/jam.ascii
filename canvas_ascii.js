@@ -1,4 +1,4 @@
-const Point = require("./math/point");
+const { getMousePosition } = require("./math/common");
 
 module.exports = class CanvasASCII {
   constructor(canvas) {
@@ -45,19 +45,16 @@ module.exports = class CanvasASCII {
     );
   }
 
-  drawTexts(texts, x, y) {
+  drawTexts(texts, x, y, lineSize = 0) {
     let yOffset = 0;
     for (let i = 0; i < texts.length; i++) {
       const text = texts[i];
       this.ctx.fillText(text, x, y + yOffset);
       const measurement = this.ctx.measureText(text);
-      if (text.length === 0) {
-        yOffset += measurement.actualBoundingBoxDescent;
-      } else {
-        yOffset +=
-          measurement.actualBoundingBoxAscent +
-          measurement.actualBoundingBoxDescent;
-      }
+      yOffset +=
+        measurement.actualBoundingBoxAscent +
+        measurement.actualBoundingBoxDescent +
+        lineSize;
     }
   }
 
@@ -67,28 +64,19 @@ module.exports = class CanvasASCII {
 
   registerMouseMoveEvent(onMove) {
     this.canvas.onmousemove = function (event) {
-      var rect = this.canvas.getBoundingClientRect();
-      var mouseX = event.clientX - rect.left;
-      var mouseY = event.clientY - rect.top;
-      onMove(new Point(mouseX, mouseY));
+      onMove(getMousePosition(this, event));
     }.bind(this);
   }
 
   registerMouseDownEvent(onMouseDown) {
     this.canvas.onmousedown = function (event) {
-      var rect = this.canvas.getBoundingClientRect();
-      var mouseX = event.clientX - rect.left;
-      var mouseY = event.clientY - rect.top;
-      onMouseDown(new Point(mouseX, mouseY));
+      onMouseDown(getMousePosition(this, event));
     }.bind(this);
   }
 
   registerMouseUpEvent(onMouseUp) {
     this.canvas.onmouseup = function (event) {
-      var rect = this.canvas.getBoundingClientRect();
-      var mouseX = event.clientX - rect.left;
-      var mouseY = event.clientY - rect.top;
-      onMouseUp(new Point(mouseX, mouseY));
+      onMouseUp(getMousePosition(this, event));
     }.bind(this);
   }
 };

@@ -11,6 +11,7 @@ module.exports = class GameObject {
   flip = false;
   bounds;
   fontSize;
+  lineHeight = 0;
 
   /**
    * @param {String} ascii
@@ -22,6 +23,16 @@ module.exports = class GameObject {
     canvas.setFontSize(this.fontSize);
     this.backingArray = ascii.split("\n");
     this.bounds = this.getBounds(this.backingArray, canvas);
+  }
+
+  /**
+   * @param {CanvasASCII} canvas
+   * @param {String[]} arr
+   */
+  updateBackingArray(canvas, arr) {
+    canvas.setFontSize(this.fontSize);
+    this.backingArray = arr;
+    this.bounds = this.getBounds(arr, canvas, this.bounds.location);
   }
 
   setFontSize(size, canvas) {
@@ -74,7 +85,7 @@ module.exports = class GameObject {
       canvas.ctx.scale(-1, 1);
       center.x = -center.x - this.bounds.size.x;
     }
-    canvas.drawTexts(this.backingArray, center.x, center.y);
+    canvas.drawTexts(this.backingArray, center.x, center.y, this.lineHeight);
     canvas.ctx.restore();
   }
 
@@ -91,7 +102,8 @@ module.exports = class GameObject {
       let measurement = canvas.ctx.measureText(arr[i]);
       height +=
         measurement.actualBoundingBoxAscent +
-        measurement.actualBoundingBoxDescent;
+        measurement.actualBoundingBoxDescent +
+        this.lineHeight;
       width = Math.max(
         width,
         measurement.actualBoundingBoxRight + measurement.actualBoundingBoxLeft

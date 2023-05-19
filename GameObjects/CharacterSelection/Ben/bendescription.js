@@ -13,5 +13,6 @@ systematic way. `,
     );
     this.bounds.location = new Point(150, 504);
     this.color = "#FFFFFF";
+    this.lineHeight = 7;
   }
 };

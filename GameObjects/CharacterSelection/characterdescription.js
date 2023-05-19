@@ -58,33 +58,6 @@ module.exports = class CharacterDescription {
     const selected = this.#items[this.#selected].items[0].bounds.center().y;
     const indicatorHeight = this.selectionIndicator.bounds.size.y;
     this.selectionIndicator.bounds.location.y = selected - indicatorHeight / 2;
-
-    canvas.registerMouseMoveEvent((point) => {
-      for (let i = 0; i < this.#items.length; i++) {
-        const item = this.#items[i];
-        item.onMouseMove(point);
-      }
-      this.selectButton.onMouseMove(point);
-    });
-    canvas.registerMouseUpEvent((point) => {
-      for (let i = 0; i < this.#items.length; i++) {
-        const item = this.#items[i];
-        if (item.combinedBounds.containsPoint(point)) {
-          this.#items[this.#selected].deselect();
-          item.select();
-          this.#selected = i;
-        }
-        item.onMouseUp(point);
-      }
-      this.selectButton.onMouseUp(point);
-    });
-    canvas.registerMouseDownEvent((point) => {
-      for (let i = 0; i < this.#items.length; i++) {
-        const item = this.#items[i];
-        item.onMouseDown(point);
-      }
-      this.selectButton.onMouseDown(point);
-    });
   }
 
   update(canvas, deltaTime) {
@@ -122,5 +95,34 @@ module.exports = class CharacterDescription {
     if (this.#isHovered) {
       this.selectionIndicator.render(canvas);
     }
+  }
+
+  onMouseMove(point) {
+    for (let i = 0; i < this.#items.length; i++) {
+      const item = this.#items[i];
+      item.onMouseMove(point);
+    }
+    this.selectButton.onMouseMove(point);
+  }
+
+  onMouseUp(point) {
+    for (let i = 0; i < this.#items.length; i++) {
+      const item = this.#items[i];
+      if (item.combinedBounds.containsPoint(point)) {
+        this.#items[this.#selected].deselect();
+        item.select();
+        this.#selected = i;
+      }
+      item.onMouseUp(point);
+    }
+    this.selectButton.onMouseUp(point);
+  }
+
+  onMouseDown(point) {
+    for (let i = 0; i < this.#items.length; i++) {
+      const item = this.#items[i];
+      item.onMouseDown(point);
+    }
+    this.selectButton.onMouseDown(point);
   }
 };

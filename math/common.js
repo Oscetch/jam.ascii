@@ -1,3 +1,6 @@
+const CanvasASCII = require("../canvas_ascii");
+const Point = require("./point");
+
 module.exports = {
   /**
    * @prop {Number}
@@ -9,7 +12,9 @@ module.exports = {
    * @returns {Number}
    */
   randomInt(min, max) {
-    return Math.floor(min + Math.random() * max);
+    const diff = max - min;
+    const result = Math.floor(Math.random() * diff);
+    return Math.floor(min + result);
   },
   /**
    * @param {Number} min
@@ -17,7 +22,8 @@ module.exports = {
    * @returns {Number}
    */
   randomFloat(min, max) {
-    return min + Math.random() * max;
+    const diff = max - min;
+    return min + Math.random() * diff;
   },
   /**
    * @param {Number} angle
@@ -71,5 +77,17 @@ module.exports = {
    */
   clamp(value, min, max) {
     return Math.max(Math.min(value, max), min);
+  },
+  /**
+   *
+   * @param {CanvasASCII} canvas
+   * @param {MouseEvent} event
+   * @returns {Point}
+   */
+  getMousePosition(canvas, event) {
+    var rect = canvas.canvas.getBoundingClientRect();
+    var mouseX = event.clientX - rect.left;
+    var mouseY = event.clientY - rect.top;
+    return new Point(mouseX, mouseY);
   },
 };

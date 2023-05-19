@@ -9,7 +9,7 @@ module.exports = class DynamicBackground extends GameObject {
     }
     for (let i = 0; i < overlay.backingArray.length; i++) {
       for (let x = 0; x < maxWidth; x++) {
-        ascii += "²";
+        ascii += "Û";
       }
       ascii += "\n";
     }

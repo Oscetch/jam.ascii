@@ -1,4 +1,4 @@
-const Point = require("../../math/point");
+const { getMousePosition } = require("../../math/common");
 const BottomPanelBackground = require("../bottompanelbackground");
 const Button = require("../button");
 
@@ -25,29 +25,6 @@ module.exports = class EnterPlanetDialog {
     this.cancelButton.hoverColor = "#5722EE";
     this.cancelButton.regularColor = "#000000";
     this.cancelButton.bounds = this.cancelButton.bounds.centerOn(bottomQuad);
-
-    canvas.canvas.onmousemove = (event) => {
-      const point = this.getMousePosition(canvas, event);
-      this.investigateButton.onMouseMove(point);
-      this.cancelButton.onMouseMove(point);
-    };
-    canvas.canvas.onmousedown = (event) => {
-      const point = this.getMousePosition(canvas, event);
-      this.investigateButton.onMouseDown(point);
-      this.cancelButton.onMouseDown(point);
-    };
-    canvas.canvas.onmouseup = (event) => {
-      const point = this.getMousePosition(canvas, event);
-      this.investigateButton.onMouseUp(point);
-      this.cancelButton.onMouseUp(point);
-    };
-  }
-
-  getMousePosition(canvas, event) {
-    var rect = canvas.canvas.getBoundingClientRect();
-    var mouseX = event.clientX - rect.left;
-    var mouseY = event.clientY - rect.top;
-    return new Point(mouseX, mouseY);
   }
 
   render(canvas, deltaTime) {
@@ -57,5 +34,20 @@ module.exports = class EnterPlanetDialog {
     this.background.render(canvas);
     this.investigateButton.render(canvas);
     this.cancelButton.render(canvas);
+  }
+
+  onMouseDown(point) {
+    this.investigateButton.onMouseDown(point);
+    this.cancelButton.onMouseDown(point);
+  }
+
+  onMouseUp(point) {
+    this.investigateButton.onMouseUp(point);
+    this.cancelButton.onMouseUp(point);
+  }
+
+  onMouseMove(point) {
+    this.investigateButton.onMouseMove(point);
+    this.cancelButton.onMouseMove(point);
   }
 };

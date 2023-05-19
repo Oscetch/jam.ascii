@@ -23,7 +23,7 @@ module.exports = class AvaDescriptionWrapper {
     this.specialAbilityText = new GameObject("Special ability", canvas, 14);
     this.specialAbilityText.bounds.location = new Point(540, 91);
 
-    this.specialAbilityDescription = new GameObject(`Heal team`, canvas, 14);
+    this.specialAbilityDescription = new GameObject(`Heal team`, canvas, 12);
     this.specialAbilityDescription.bounds.location.x =
       this.specialAbilityText.bounds.location.x;
     this.specialAbilityDescription.bounds.location.y = 137;
@@ -34,7 +34,7 @@ module.exports = class AvaDescriptionWrapper {
       `I wonder what this
 does..`,
       canvas,
-      14
+      12
     );
     this.specialAbilityComment.bounds.location.x =
       this.specialAbilityText.bounds.location.x;
