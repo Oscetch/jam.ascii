@@ -51,7 +51,6 @@ module.exports = class BattleScene extends Scene {
     if (this.victoryTime > 2) {
       if (internalMemory.visitingPlanet) {
         internalMemory.visitingPlanet.isVisited = true;
-        internalMemory.visitingPlanet.color = "#AC91F8";
       }
       this.onChangeScene(SCENE_KEY_WORLD);
     }

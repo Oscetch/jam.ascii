@@ -1,6 +1,6 @@
 const GameObject = require("../gameobject");
 const internalMemory = require("../../Models/internalmemory");
-const TopPanelBackground = require("./toppanelbackground");
+const TopPanelBackground = require("../toppanelbackground");
 const Point = require("../../math/point");
 const HealthBar = require("./healthbar");
 

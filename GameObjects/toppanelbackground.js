@@ -1,4 +1,4 @@
-const GameObject = require("../gameobject");
+const GameObject = require("./gameobject");
 
 module.exports = class TopPanelBackground extends GameObject {
   constructor(canvas) {
@@ -10,5 +10,6 @@ module.exports = class TopPanelBackground extends GameObject {
       canvas,
       16
     );
+    this.color = "#111112";
   }
 };

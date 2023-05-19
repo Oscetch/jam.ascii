@@ -18,6 +18,7 @@ const MiaShip = require("../GameObjects/Characters/miaship");
 const MaxShip = require("../GameObjects/Characters/maxship");
 const BenShip = require("../GameObjects/Characters/benship");
 const AvaShip = require("../GameObjects/Characters/avaship");
+const TopPanel = require("../GameObjects/World/toppanel");
 
 module.exports = class WorldScene extends Scene {
   #items;
@@ -27,6 +28,7 @@ module.exports = class WorldScene extends Scene {
     const worldAndBounds = build(10_000, 10_000, 2000, this.canvas);
     this.#items = worldAndBounds.galaxy;
     this.worldBounds = worldAndBounds.bounds;
+    internalMemory.planetsTotal = worldAndBounds.info.planetsCreated;
     this.camera = new Camera();
     this.distantStarHandler = new DistantStarHandler(this.camera);
     this.character = this.getCharacter();
@@ -36,6 +38,7 @@ module.exports = class WorldScene extends Scene {
       this.enterPlanetDialog.show = false;
       this.onChangeScene(SCENE_KEY_BATTLE_START);
     });
+    this.topPanel = new TopPanel(this.canvas);
   }
 
   renderInternal(deltaTime) {
@@ -91,6 +94,8 @@ module.exports = class WorldScene extends Scene {
     }
 
     this.character.renderTranslated(this.canvas, this.camera.bounds.location);
+
+    this.topPanel.render(this.canvas, deltaTime);
 
     if (this.enterPlanetDialog.show) {
       this.enterPlanetDialog.render(this.canvas, deltaTime);

@@ -2,11 +2,11 @@ const GameObject = require("../GameObjects/gameobject");
 const CanvasASCII = require("./../canvas_ascii");
 const Sun = require("./sun");
 const { randomFloat, addToAngle, PI2, randomInt } = require("./../math/common");
-const { STORAGE_PLANET_COUNTER } = require("../Models/constants");
 
 module.exports = class Planet extends GameObject {
   isVisited = false;
   isPlanet = true;
+  #hasSetBroken = false;
 
   /**
    * @param {Sun} sun
@@ -14,8 +14,9 @@ module.exports = class Planet extends GameObject {
    * @param {CanvasASCII} canvas
    * @param {Number} distanceToSun
    */
-  constructor(sun, ascii, canvas, distanceToSun) {
-    super(ascii, canvas, 10);
+  constructor(sun, asciiRegular, asciiBroken, canvas, distanceToSun) {
+    super(asciiRegular, canvas, randomInt(1, 4));
+    this.asciiBroken = asciiBroken;
     this.color = "#FFFFFF";
     this.distanceToSun = distanceToSun;
     this.rotationSpeed = randomFloat(Math.PI / 32, Math.PI / 16);
@@ -25,13 +26,14 @@ module.exports = class Planet extends GameObject {
     this.currentAngle = randomFloat(0, PI2);
     this.sun = sun;
     this.update(canvas, 0);
-
-    const currentPlanet = Number(localStorage.getItem(STORAGE_PLANET_COUNTER));
-    this.id = currentPlanet ? currentPlanet : 0;
-    localStorage.setItem(STORAGE_PLANET_COUNTER, currentPlanet + 1);
   }
 
   update(canvas, deltaTime) {
+    if (this.isVisited && !this.#hasSetBroken) {
+      this.#hasSetBroken = true;
+      this.color = "#798377";
+      this.updateBackingArray(canvas, this.asciiBroken.split("\n"));
+    }
     this.currentAngle = addToAngle(
       this.currentAngle,
       this.rotationSpeed * deltaTime
