@@ -1,30 +1,41 @@
-const { getMousePosition } = require("../../math/common");
+const Point = require("../../math/point");
 const BottomPanelBackground = require("../bottompanelbackground");
 const Button = require("../button");
+const GameObject = require("../gameobject");
+const SmallBottomPanelBackground = require("./smallbottompanelbackground");
 
 module.exports = class EnterPlanetDialog {
   show = false;
 
   constructor(canvas, onInvestigate) {
-    this.background = new BottomPanelBackground(canvas);
-    this.background.color = "#FFFFFF";
+    this.background = new SmallBottomPanelBackground(canvas);
+    this.background.color = "#111112";
 
-    const split = this.background.bounds.split();
-    const topQuad = split.topRight.union(split.topLeft);
-    const bottomQuad = split.bottomRight.union(split.bottomLeft);
-
-    this.investigateButton = new Button("INVESTIGATE", canvas, onInvestigate);
+    this.investigateButton = new Button(
+      "INVESTIGATE",
+      canvas,
+      onInvestigate,
+      14
+    );
     this.investigateButton.hoverColor = "#5722EE";
-    this.investigateButton.regularColor = "#000000";
-    this.investigateButton.bounds =
-      this.investigateButton.bounds.centerOn(topQuad);
+    this.investigateButton.regularColor = "#FFFFFF";
+    this.investigateButton.bounds.location = new Point(446, 587);
 
-    this.cancelButton = new Button("   LEAVE   ", canvas, () => {
-      this.show = false;
-    });
+    this.cancelButton = new Button(
+      "LEAVE",
+      canvas,
+      () => {
+        this.show = false;
+      },
+      14
+    );
     this.cancelButton.hoverColor = "#5722EE";
-    this.cancelButton.regularColor = "#000000";
-    this.cancelButton.bounds = this.cancelButton.bounds.centerOn(bottomQuad);
+    this.cancelButton.regularColor = "#FFFFFF";
+    this.cancelButton.bounds.location = new Point(658, 587);
+
+    this.text = new GameObject("PLANET", canvas, 16);
+    this.text.color = "#FFFFFF";
+    this.text.bounds.location = new Point(40, 596);
   }
 
   render(canvas, deltaTime) {
@@ -34,6 +45,8 @@ module.exports = class EnterPlanetDialog {
     this.background.render(canvas);
     this.investigateButton.render(canvas);
     this.cancelButton.render(canvas);
+
+    this.text.render(canvas);
   }
 
   onMouseDown(point) {

@@ -12,11 +12,12 @@ module.exports = class Sun extends GameObject {
    * @param {CanvasASCII} canvas
    */
   constructor(rotationBounds, ascii, canvas) {
-    super(ascii, canvas, 15);
+    super(ascii, canvas, randomInt(4, 7));
     this.color = "#FFFFFF";
     this.rotationBounds = rotationBounds;
     this.rotationBoundsCenter = rotationBounds.center();
     this.rotationSpeed = randomFloat(Math.PI / 32, Math.PI / 16);
+    this.localRotationSpeed = randomFloat(Math.PI / 16, Math.PI / 8);
     if (randomInt(0, 2) == 0) {
       this.rotationSpeed = -this.rotationSpeed;
     }
@@ -38,6 +39,10 @@ module.exports = class Sun extends GameObject {
     );
 
     this.bounds.location = newCenter.subtract(this.bounds.size.dividedBy(2));
+    this.rotation = addToAngle(
+      this.rotation,
+      this.localRotationSpeed * deltaTime
+    );
   }
 
   isInteractable() {

@@ -91,7 +91,7 @@ module.exports = class TopPanel {
     ]);
     const timeLeft = 300 - internalmemory.fuelTime;
     const minutes = String(Math.floor(timeLeft / 60)).padStart(2, "0");
-    const seconds = Math.floor(timeLeft % 60);
+    const seconds = String(Math.floor(timeLeft % 60)).padStart(2, "0");
     this.fuelTime.updateBackingArray(canvas, [`${minutes}:${seconds}`]);
 
     for (let i = 0; i < this.#items.length; i++) {

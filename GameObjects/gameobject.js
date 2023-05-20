@@ -11,6 +11,7 @@ module.exports = class GameObject {
   flip = false;
   bounds;
   fontSize;
+  rotation = 0;
   lineHeight = 0;
 
   /**
@@ -80,12 +81,23 @@ module.exports = class GameObject {
     canvas.ctx.save();
     canvas.setFontSize(this.fontSize);
     canvas.setFontColor(this.color);
-    let center = this.bounds.location.subtract(offset);
+    let offsetLocation = this.bounds.location.subtract(offset);
     if (this.flip) {
       canvas.ctx.scale(-1, 1);
-      center.x = -center.x - this.bounds.size.x;
+      offsetLocation.x = -offsetLocation.x - this.bounds.size.x;
     }
-    canvas.drawTexts(this.backingArray, center.x, center.y, this.lineHeight);
+    if (this.rotation !== 0) {
+      const center = this.bounds.center().subtract(offset);
+      canvas.ctx.translate(center.x, center.y);
+      canvas.ctx.rotate(this.rotation);
+      canvas.ctx.translate(-center.x, -center.y);
+    }
+    canvas.drawTexts(
+      this.backingArray,
+      offsetLocation.x,
+      offsetLocation.y,
+      this.lineHeight
+    );
     canvas.ctx.restore();
   }
 

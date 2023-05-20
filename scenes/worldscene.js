@@ -25,7 +25,7 @@ module.exports = class WorldScene extends Scene {
   #connectedToCharacter = [];
 
   onStart() {
-    const worldAndBounds = build(10_000, 10_000, 2000, this.canvas);
+    const worldAndBounds = build(20_000, 20_000, 4000, this.canvas);
     this.#items = worldAndBounds.galaxy;
     this.worldBounds = worldAndBounds.bounds;
     internalMemory.planetsTotal = worldAndBounds.info.planetsCreated;
@@ -76,6 +76,9 @@ module.exports = class WorldScene extends Scene {
 
     for (let i = 0; i < this.#items.length; i++) {
       const item = this.#items[i];
+      if (!this.enterPlanetDialog.show) {
+        item.update(this.canvas, deltaTime);
+      }
       if (inclusiveBounds.overlaps(item.bounds)) {
         if (
           item.isInteractable() &&
@@ -85,9 +88,6 @@ module.exports = class WorldScene extends Scene {
           this.#connectedToCharacter.push(item);
           this.enterPlanetDialog.show = true;
           internalMemory.visitingPlanet = item;
-        }
-        if (!this.enterPlanetDialog.show) {
-          item.update(this.canvas, deltaTime);
         }
         item.renderTranslated(this.canvas, this.camera.bounds.location);
       }
