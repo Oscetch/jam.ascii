@@ -14,8 +14,9 @@ module.exports = class Planet extends GameObject {
    * @param {CanvasASCII} canvas
    * @param {Number} distanceToSun
    */
-  constructor(sun, asciiRegular, asciiBroken, canvas, distanceToSun) {
+  constructor(sun, asciiRegular, asciiBroken, canvas, distanceToSun, name) {
     super(asciiRegular, canvas, randomInt(1, 4));
+    this.name = name;
     this.asciiBroken = asciiBroken;
     this.color = "#FFFFFF";
     this.distanceToSun = distanceToSun;

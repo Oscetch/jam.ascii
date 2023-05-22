@@ -3,6 +3,7 @@ const CanvasASCII = require("../canvas_ascii");
 const { randomInt, lerpColor } = require("../math/common");
 const Rectangle = require("../math/rectangle");
 const Planet = require("./planet");
+const planetsnamegen = require("./planetnamesgen");
 const Sun = require("./sun");
 
 module.exports = {
@@ -28,6 +29,7 @@ module.exports = {
     sun.bounds = sun.bounds.centerOn(startQuadrant);
     const planetDistance =
       sun.bounds.center().distanceTo(bounds.center()) / planetCount;
+    const names = planetsnamegen.generateNames();
 
     for (let i = 0; i < planetCount; i++) {
       const premade = this.getPremadePlanetAscii();
@@ -36,7 +38,8 @@ module.exports = {
         premade.regular,
         premade.broken,
         canvas,
-        planetDistance * (i + 1)
+        planetDistance * (i + 1),
+        names[i]
       );
       system.push(planet);
     }

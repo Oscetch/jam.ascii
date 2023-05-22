@@ -1,8 +1,8 @@
 const Point = require("../../math/point");
-const BottomPanelBackground = require("../bottompanelbackground");
 const Button = require("../button");
 const GameObject = require("../gameobject");
 const SmallBottomPanelBackground = require("./smallbottompanelbackground");
+const internalMemory = require("./../../Models/internalmemory");
 
 module.exports = class EnterPlanetDialog {
   show = false;
@@ -41,6 +41,14 @@ module.exports = class EnterPlanetDialog {
   render(canvas, deltaTime) {
     this.investigateButton.update(canvas, deltaTime);
     this.cancelButton.update(canvas, deltaTime);
+    if (
+      internalMemory.visitingPlanet &&
+      internalMemory.visitingPlanet.name !== this.text.backingArray[0]
+    ) {
+      this.text.updateBackingArray(canvas, [
+        internalMemory.visitingPlanet.name,
+      ]);
+    }
 
     this.background.render(canvas);
     this.investigateButton.render(canvas);

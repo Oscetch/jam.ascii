@@ -4,10 +4,19 @@ const CharacterStats = require("../characterstats");
 
 module.exports = class Ability {
   requiresTarget = true;
+  lastUsedRound = -99999;
 
-  constructor(name, description) {
+  /**
+   * @param {String} name
+   * @param {String} description
+   * @param {Number} requiredLevel
+   * @param {Number} cooldown
+   */
+  constructor(name, description, requiredLevel, cooldown) {
     this.name = name;
     this.description = description;
+    this.requiredLevel = requiredLevel;
+    this.cooldown = cooldown;
   }
 
   /**
@@ -37,8 +46,33 @@ module.exports = class Ability {
    * @param {CharacterStats} user
    * @param {CharacterStats} target
    */
-  doDamage(user, target, powerModifier) {
-    const damage = user.power * powerModifier;
+  doDamage(user, target) {
+    const currentPowerModifier = user.powerModifier;
+    const currentDamageTakenModifier = user.damageTakenModifier;
+    user.powerModifier = 1;
+    user.damageTakenModifier = 1;
+    var damage = user.power * currentPowerModifier * currentDamageTakenModifier;
+    if (target.onDamage) {
+      damage = target.onDamage(damage, user);
+      target.onDamage = null;
+    }
+
+    target.currentHealth -= damage;
+    return damage;
+  }
+
+  /**
+   *
+   * @param {CharacterStats} user
+   * @param {CharacterStats} target
+   */
+  doHealing(user, target) {
+    const currentPowerModifier = user.powerModifier;
+    const currentDamageTakenModifier = user.damageTakenModifier;
+    user.powerModifier = 1;
+    user.damageTakenModifier = 1;
+    const damage =
+      user.power * currentPowerModifier * currentDamageTakenModifier;
     target.currentHealth -= damage;
     return damage;
   }

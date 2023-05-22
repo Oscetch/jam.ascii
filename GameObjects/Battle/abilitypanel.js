@@ -5,6 +5,8 @@ const Rectangle = require("../../math/rectangle");
 const GameObject = require("../gameobject");
 const NoAbility = require("./Abilities/noability");
 const AbilityChoiceBackground = require("./abilitychoicebackground");
+const internalmemory = require("./../../Models/internalmemory");
+const CharacterStats = require("../../Models/characterstats");
 
 module.exports = class AbilityPanel {
   hasSelection = false;
@@ -15,11 +17,13 @@ module.exports = class AbilityPanel {
    * @param {CanvasASCII} canvas
    * @param {Ability[]} abilities
    * @param {Point} location
+   * @param {CharacterStats} character
    */
-  constructor(canvas, abilities, location) {
+  constructor(canvas, abilities, location, character) {
     this.background = new AbilityChoiceBackground(canvas);
     this.background.bounds.location = location;
     this.abilities = abilities;
+    this.character = character;
 
     this.abilityIcons = [];
 
@@ -43,7 +47,10 @@ module.exports = class AbilityPanel {
         new Point(widthPerAbility, availableSpace.size.y)
       );
       var abilityIcon;
-      if (i < abilities.length) {
+      if (
+        i < abilities.length &&
+        internalmemory.level >= abilities[i].requiredLevel
+      ) {
         const index = i;
         abilityIcon = abilities[i].createIcon(canvas, () => {
           this.selectAbility(canvas, index);
@@ -90,6 +97,20 @@ module.exports = class AbilityPanel {
     this.background.render(canvas);
     for (let i = 0; i < this.abilityIcons.length; i++) {
       const abilityIcon = this.abilityIcons[i];
+      const ability = this.abilities[i];
+      if (ability) {
+        if (
+          ability.cooldown + ability.lastUsedRound >=
+            internalmemory.currentRound ||
+          this.character.stunnedUntilTurn > internalmemory.currentRound
+        ) {
+          abilityIcon.regularColor = "#414141";
+          abilityIcon.hoverColor = "#414141";
+        } else {
+          abilityIcon.regularColor = "#FFFFFF";
+          abilityIcon.hoverColor = "#AC91F8";
+        }
+      }
       abilityIcon.update(canvas, deltaTime);
       abilityIcon.render(canvas);
     }
@@ -101,6 +122,15 @@ module.exports = class AbilityPanel {
 
   onMouseDown(point) {
     for (let i = 0; i < this.abilityIcons.length; i++) {
+      const ability = this.abilities[i];
+      if (
+        (ability &&
+          ability.lastUsedRound + ability.cooldown >=
+            internalmemory.currentRound) ||
+        this.character.stunnedUntilTurn > internalmemory.currentRound
+      ) {
+        continue;
+      }
       this.abilityIcons[i].onMouseDown(point);
     }
   }
@@ -114,6 +144,15 @@ module.exports = class AbilityPanel {
 
   onMouseUp(point) {
     for (let i = 0; i < this.abilityIcons.length; i++) {
+      const ability = this.abilities[i];
+      if (
+        (ability &&
+          ability.lastUsedRound + ability.cooldown >=
+            internalmemory.currentRound) ||
+        this.character.stunnedUntilTurn > internalmemory.currentRound
+      ) {
+        continue;
+      }
       this.abilityIcons[i].onMouseUp(point);
     }
   }

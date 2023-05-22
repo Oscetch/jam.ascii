@@ -29,6 +29,14 @@ module.exports = class BattleScene extends Scene {
     const enemyCenter = new Point(536 + 112, 204 + 88);
     this.enemy.bounds = this.enemy.bounds.centerOnPoint(enemyCenter);
     this.bottomPanel = new BattleBottomPanel(this.canvas);
+    internalMemory.currentRound = 0;
+    for (let i = 0; i < internalMemory.team.length; i++) {
+      const characterStats = internalMemory.team[i];
+      characterStats.stunnedUntilTurn = -9999;
+      for (let j = 0; j < characterStats.abilities.length; j++) {
+        characterStats.abilities[j].lastUsedRound = -9999;
+      }
+    }
   }
 
   renderInternal(deltaTime) {
@@ -80,11 +88,13 @@ module.exports = class BattleScene extends Scene {
     }
     if (!this.abilityObject) {
       if (this.currentTurn < this.battleTurnInfo.abilities.length) {
-        const result = this.battleTurnInfo.abilities[this.currentTurn].use(
-          this.battleTurnInfo.characterStats[this.currentTurn],
-          internalMemory.team,
-          [this.enemy.stats]
-        );
+        const character = this.battleTurnInfo.characterStats[this.currentTurn];
+        character.onDamage = null;
+        const ability = this.battleTurnInfo.abilities[this.currentTurn];
+        const result = ability.use(character, internalMemory.team, [
+          this.enemy.stats,
+        ]);
+        ability.lastUsedRound = internalMemory.currentRound;
         this.abilityObject = this.createTeamAbilityObject(result.damage, [
           this.enemy.bounds,
         ]);
@@ -97,6 +107,7 @@ module.exports = class BattleScene extends Scene {
           [this.enemy.stats],
           [internalMemory.team[target]]
         );
+        internalMemory.currentRound += 1;
         this.abilityObject = this.createMonsterAbilityObject(
           target,
           result.damage

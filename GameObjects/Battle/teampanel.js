@@ -23,7 +23,8 @@ module.exports = class TeamPanel {
         new AbilityPanel(
           canvas,
           internalMemory.team[i].abilities,
-          new Point(character.name.bounds.right() + 112, yOffset + 2)
+          new Point(character.name.bounds.right() + 112, yOffset + 2),
+          internalMemory.team[i]
         )
       );
 
@@ -64,7 +65,10 @@ module.exports = class TeamPanel {
     for (let i = 0; i < this.abilityPanels.length; i++) {
       const abilityPanel = this.abilityPanels[i];
       const character = this.characters[i];
-      if (character.character.isDead()) {
+      if (
+        character.character.isDead() ||
+        character.character.stunnedUntilTurn > internalMemory.currentRound
+      ) {
         info.deadCount += 1;
         continue;
       }

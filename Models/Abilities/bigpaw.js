@@ -1,13 +1,15 @@
-const AttackAbilityIcon = require("../../GameObjects/Battle/Abilities/attackabilityicon");
+const BigPawIcon = require("../../GameObjects/Battle/Abilities/bigpawicon");
 const Ability = require("./ability");
 
-module.exports = class AttackAbility extends Ability {
+module.exports = class BigPaw extends Ability {
   constructor() {
-    super("ATTACK", "ATTACK -> 100% power damage", 0, 0);
+    super("BIG PAW", "BIG PAW -> 200% POWER DAMAGE", 7, 3);
   }
 
   use(user, team, targets) {
     const target = targets[0];
+
+    user.powerModifier += 2;
     return {
       targetsHit: [target],
       damage: this.doDamage(user, target),
@@ -16,6 +18,6 @@ module.exports = class AttackAbility extends Ability {
   }
 
   createIcon(canvas, clicked) {
-    return new AttackAbilityIcon(canvas, clicked);
+    return new BigPawIcon(canvas, clicked);
   }
 };
