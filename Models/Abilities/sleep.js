@@ -20,7 +20,7 @@ module.exports = class AttackAbility extends Ability {
    * @returns {UseResult}
    */
   use(user, team, targets) {
-    const healingDone = user.power * user.powerModifier * 0.5;
+    const healingDone = this.getPower(user) * user.powerModifier * 0.5;
     user.currentHealth = Math.min(
       user.health,
       user.currentHealth + healingDone

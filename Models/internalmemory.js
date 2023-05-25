@@ -8,4 +8,16 @@ module.exports = {
   visitingPlanet: null,
   fuelTime: 0,
   currentRound: 0,
+
+  reset() {
+    this.fuel = 4;
+    this.memories = 0;
+    this.level = 1;
+    this.planetsVisited = 0;
+    this.planetsTotal = 0;
+    this.team = [];
+    this.visitingPlanet = null;
+    this.fuelTime = 0;
+    this.currentRound = 0;
+  },
 };

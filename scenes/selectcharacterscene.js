@@ -33,6 +33,7 @@ module.exports = class SelectCharacterScene extends Scene {
       this.canvas.canvas.style = "background-color: #FFFFFF";
       this.#items.push(
         new CharacterDescription(this.canvas, (selectedName) => {
+          internalMemory.reset();
           internalMemory.team = [
             new CharacterStats(MIA, MIA === selectedName),
             new CharacterStats(MAX, MAX === selectedName),

@@ -1,4 +1,4 @@
-const { fuel, memories, level } = require("../../Models/internalmemory");
+const internalmemory = require("../../Models/internalmemory");
 const Point = require("../../math/point");
 const GameObject = require("../gameobject");
 const Banner = require("./banner");
@@ -31,7 +31,11 @@ module.exports = class LeftInformation {
     this.levelText.bounds.location = new Point(75.39, 100.89);
     this.#items.push(this.levelText);
 
-    this.currentLevelText = new GameObject(String(level), canvas, 16);
+    this.currentLevelText = new GameObject(
+      String(internalmemory.level),
+      canvas,
+      16
+    );
     this.currentLevelText.color = "#FFFFFF";
     this.currentLevelText.bounds.location = new Point(85.39, 122.89);
     this.#items.push(this.currentLevelText);
@@ -46,7 +50,11 @@ module.exports = class LeftInformation {
     this.fuelText.color = "#FFFFFF";
     this.#items.push(this.fuelText);
 
-    this.fuelAmountText = new GameObject(`${fuel}/10`, canvas, 12);
+    this.fuelAmountText = new GameObject(
+      `${internalmemory.fuel}/10`,
+      canvas,
+      12
+    );
     this.fuelAmountText.bounds.location = new Point(66.39, 210.89);
     this.fuelAmountText.color = "#FFFFFF";
     this.#items.push(this.fuelAmountText);
@@ -61,7 +69,11 @@ module.exports = class LeftInformation {
     this.memoryText.color = "#FFFFFF";
     this.#items.push(this.memoryText);
 
-    this.memoryAmountText = new GameObject(`${memories}/10`, canvas, 12);
+    this.memoryAmountText = new GameObject(
+      `${internalmemory.memories}/10`,
+      canvas,
+      12
+    );
     this.memoryAmountText.bounds.location = new Point(67.39, 292.89);
     this.memoryAmountText.color = "#FFFFFF";
     this.#items.push(this.memoryAmountText);

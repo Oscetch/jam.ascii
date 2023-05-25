@@ -8,8 +8,8 @@ const CharacterAttackIndication = require("../GameObjects/Battle/enemyhit");
 const { randomInt } = require("../math/common");
 const TeamHit = require("../GameObjects/Battle/teamhit");
 const {
-  SCENE_KEY_SELECT_CHARACTER,
-  SCENE_KEY_WORLD,
+  SCENE_KEY_BATTLE_END,
+  SCENE_KEY_DEATH,
 } = require("../Models/constants");
 
 module.exports = class BattleScene extends Scene {
@@ -60,7 +60,7 @@ module.exports = class BattleScene extends Scene {
       if (internalMemory.visitingPlanet) {
         internalMemory.visitingPlanet.isVisited = true;
       }
-      this.onChangeScene(SCENE_KEY_WORLD);
+      this.onChangeScene(SCENE_KEY_BATTLE_END);
     }
   }
 
@@ -69,6 +69,7 @@ module.exports = class BattleScene extends Scene {
     if (this.currentTurnTime > 2) {
       if (this.enemy.stats.isDead()) {
         this.showVictoryText = true;
+        internalMemory.planetsVisited += 1;
         this.renderVictory(0);
       }
       this.currentTurn += 1;
@@ -163,7 +164,7 @@ module.exports = class BattleScene extends Scene {
     const isFinishedInfo = this.teamPanel.tryCheckFinished();
     if (isFinishedInfo.isFinished) {
       if (isFinishedInfo.deadCount === 4) {
-        this.onChangeScene(SCENE_KEY_SELECT_CHARACTER);
+        this.onChangeScene(SCENE_KEY_DEATH);
         return;
       }
       this.battleTurnInfo = isFinishedInfo;

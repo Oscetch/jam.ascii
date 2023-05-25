@@ -1,3 +1,4 @@
+const { clamp } = require("../../math/common");
 const Point = require("../../math/point");
 const GameObject = require("../gameobject");
 
@@ -22,7 +23,8 @@ module.exports = class HealthBar extends GameObject {
   }
 
   setTargetPercent(targetPercent) {
-    this.#targetWidth = Math.floor(this.backingArray[0].length * targetPercent);
+    const normPercent = clamp(targetPercent, 0, 1);
+    this.#targetWidth = Math.floor(this.backingArray[0].length * normPercent);
   }
 
   buildOverlaySize(size, canvas) {

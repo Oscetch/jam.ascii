@@ -51,7 +51,8 @@ module.exports = class Ability {
     const currentDamageTakenModifier = user.damageTakenModifier;
     user.powerModifier = 1;
     user.damageTakenModifier = 1;
-    var damage = user.power * currentPowerModifier * currentDamageTakenModifier;
+    var damage =
+      this.getPower(user) * currentPowerModifier * currentDamageTakenModifier;
     if (target.onDamage) {
       damage = target.onDamage(damage, user);
       target.onDamage = null;
@@ -72,7 +73,7 @@ module.exports = class Ability {
     user.powerModifier = 1;
     user.damageTakenModifier = 1;
     const damage =
-      user.power * currentPowerModifier * currentDamageTakenModifier;
+      this.getPower(user) * currentPowerModifier * currentDamageTakenModifier;
     target.currentHealth -= damage;
     return damage;
   }
@@ -83,4 +84,8 @@ module.exports = class Ability {
    * @returns {AbilityIconBase}
    */
   createIcon(canvas, clicked) {}
+
+  getPower(user) {
+    return user.power + 10 * user.level;
+  }
 };

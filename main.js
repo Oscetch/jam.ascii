@@ -9,12 +9,15 @@ const {
   SCENE_KEY_BATTLE_START,
   SCENE_KEY_BATTLE_INTERLUDE,
   SCENE_KEY_BATTLE,
+  SCENE_KEY_BATTLE_END,
+  SCENE_KEY_DEATH,
 } = require("./Models/constants.js");
 const BattleStartScene = require("./scenes/battlestartscene.js");
 const BattleInterludeScene = require("./scenes/battleinterludescene.js");
 const BattleScene = require("./scenes/battlescene.js");
+const BattleEndScene = require("./scenes/battleendscene.js");
 
-const scenes = {};
+var scenes = {};
 var scene;
 var canvasASCII = new CanvasASCII(document.getElementById("gameCanvas"));
 changeScene(SCENE_KEY_START);
@@ -57,6 +60,13 @@ function getScene(sceneIndex) {
       const battleScene = new BattleScene(canvasASCII, changeScene);
       battleScene.onStart();
       return battleScene;
+    case SCENE_KEY_BATTLE_END:
+      const battleEndScene = new BattleEndScene(canvasASCII, changeScene);
+      battleEndScene.onStart();
+      return battleEndScene;
+    case SCENE_KEY_DEATH:
+      scenes = {};
+      return getScene(SCENE_KEY_SELECT_CHARACTER);
   }
 }
 
