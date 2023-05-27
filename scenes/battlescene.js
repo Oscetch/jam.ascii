@@ -66,7 +66,7 @@ module.exports = class BattleScene extends Scene {
 
   renderCombat(deltaTime) {
     this.currentTurnTime += deltaTime;
-    if (this.currentTurnTime > 2) {
+    if (this.currentTurnTime > 0.5) {
       if (this.enemy.stats.isDead()) {
         this.showVictoryText = true;
         internalMemory.planetsVisited += 1;
