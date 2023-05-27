@@ -36,7 +36,6 @@ module.exports = class BattleStartScene extends Scene {
   }
 
   getRandomEnemy() {
-    /*
     const enemies = [
       new SpaceKraken(this.canvas),
       new AsteroidSpider(this.canvas),
@@ -44,8 +43,6 @@ module.exports = class BattleStartScene extends Scene {
       new WarpDemon(this.canvas),
     ];
     return enemies[randomInt(0, enemies.length)];
-    */
-    return new SpaceKraken(this.canvas);
   }
 
   renderInternal(deltaTime) {
