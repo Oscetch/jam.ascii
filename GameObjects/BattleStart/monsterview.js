@@ -13,7 +13,12 @@ module.exports = class MonsterView {
    */
   constructor(canvas, monster) {
     this.titleText = new GameObject(monster.name, canvas, 32);
-    this.titleText.bounds.location = new Point(208, 48);
+    const maxWidth = 384;
+    const scale = Math.min(1, maxWidth / this.titleText.bounds.size.x);
+    this.titleText.setFontSize(Math.floor(32 * scale), canvas);
+    this.titleText.bounds = this.titleText.bounds.centerOnPoint(
+      new Point(208 + 384 / 2, 48 + 16)
+    );
     this.#items.push(this.titleText);
 
     this.monster = monster;

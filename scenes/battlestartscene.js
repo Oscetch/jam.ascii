@@ -9,6 +9,9 @@ const {
 const { randomInt } = require("../math/common");
 const Scene = require("./scene");
 const internalMemory = require("./../Models/internalmemory");
+const AsteroidSpider = require("../GameObjects/Enemies/asteroidspider");
+const PlanetaryBehemoth = require("../GameObjects/Enemies/planetarybehemoth");
+const WarpDemon = require("../GameObjects/Enemies/warpdemon");
 
 module.exports = class BattleStartScene extends Scene {
   constructor(canvas, onChangeScene) {
@@ -33,8 +36,16 @@ module.exports = class BattleStartScene extends Scene {
   }
 
   getRandomEnemy() {
-    const enemies = [new SpaceKraken(this.canvas)];
+    /*
+    const enemies = [
+      new SpaceKraken(this.canvas),
+      new AsteroidSpider(this.canvas),
+      new PlanetaryBehemoth(this.canvas),
+      new WarpDemon(this.canvas),
+    ];
     return enemies[randomInt(0, enemies.length)];
+    */
+    return new SpaceKraken(this.canvas);
   }
 
   renderInternal(deltaTime) {

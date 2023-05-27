@@ -4,7 +4,12 @@ const ReflectIcon = require("../../GameObjects/Battle/Abilities/reflecticon");
 
 module.exports = class Reflect extends Ability {
   constructor() {
-    super("REFLECT", "REFLECT -> ABSORBS 100% POWER DAMAGE", 7, 3);
+    super(
+      "REFLECT",
+      "REFLECT -> ABSORBS 100% POWER DAMAGE AND REFLECTS IT BACK TO THE ATTACKER",
+      7,
+      3
+    );
   }
   /**
    * @param {CharacterStats} user

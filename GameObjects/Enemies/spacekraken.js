@@ -15,7 +15,10 @@ module.exports = class SpaceKraken extends EnemyBase {
      ÛÛÛ
      Û Û Û
      Û Û Û
-     ² ² ²`
+     ² ² ²`,
+      3,
+      5
     );
+    this.stats.abilities.push(this.getRandomTier2Ability());
   }
 };

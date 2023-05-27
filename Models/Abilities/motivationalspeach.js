@@ -5,7 +5,7 @@ module.exports = class MotivationalSpeach extends Ability {
   constructor() {
     super(
       "MOTIVATIONAL SPEACH",
-      "MOTIVATIONAL SPEACH -> IF HE IS ATTACKED, THE DAMAGE THAT WOULD HAVE INFLICTED HIM IS DONE TO THE ENEMY INSTEAD",
+      "MOTIVATIONAL SPEACH -> EVERYONE GAINS 50% POWER",
       7,
       3
     );
@@ -20,10 +20,9 @@ module.exports = class MotivationalSpeach extends Ability {
   use(user, team, targets) {
     user.powerModifier = 1;
     user.damageTakenModifier = 1;
-    user.onDamage = (damage, target) => {
-      target.currentHealth -= damage * 2;
-      return 0;
-    };
+    for (let i = 0; i < team.length; i++) {
+      team[i].powerModifier += 0.5;
+    }
 
     return {
       targetsHit: [],

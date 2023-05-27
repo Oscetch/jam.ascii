@@ -101,13 +101,17 @@ module.exports = class BattleScene extends Scene {
         ]);
       } else {
         const target = this.getRandomAliveTarget();
-        const result = this.enemy.stats.abilities[
-          randomInt(0, this.enemy.stats.abilities.length)
-        ].use(
+        const availableAbilities = this.enemy.stats.abilities.filter(
+          (x) => x.lastUsedRound + x.cooldown < internalMemory.currentRound
+        );
+        const ability =
+          availableAbilities[randomInt(0, availableAbilities.length)];
+        const result = ability.use(
           this.enemy.stats,
           [this.enemy.stats],
           [internalMemory.team[target]]
         );
+        ability.lastUsedRound = internalMemory.currentRound;
         internalMemory.currentRound += 1;
         this.abilityObject = this.createMonsterAbilityObject(
           target,
