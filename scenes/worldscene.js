@@ -12,6 +12,7 @@ const {
   AVA,
   SCENE_KEY_BATTLE_START,
   SCENE_KEY_DEATH,
+  SCENE_KEY_WIN,
 } = require("../Models/constants");
 const internalMemory = require("../Models/internalmemory");
 const EnterPlanetDialog = require("../GameObjects/World/enterplanetdialog");
@@ -39,7 +40,9 @@ module.exports = class WorldScene extends Scene {
       this.enterPlanetDialog.show = false;
       this.onChangeScene(SCENE_KEY_BATTLE_START);
     });
-    this.topPanel = new TopPanel(this.canvas);
+    this.topPanel = new TopPanel(this.canvas, () => {
+      this.onChangeScene(SCENE_KEY_WIN);
+    });
   }
 
   renderInternal(deltaTime) {
@@ -139,14 +142,17 @@ module.exports = class WorldScene extends Scene {
 
   onMouseDown(point) {
     this.enterPlanetDialog.onMouseDown(point);
+    this.topPanel.onMouseDown(point);
   }
 
   onMouseUp(point) {
     this.enterPlanetDialog.onMouseUp(point);
+    this.topPanel.onMouseUp(point);
   }
 
   onMouseMove(point) {
     this.enterPlanetDialog.onMouseMove(point);
+    this.topPanel.onMouseMove(point);
   }
 
   onKeyDown(keyCode) {

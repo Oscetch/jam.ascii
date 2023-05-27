@@ -11,6 +11,11 @@ module.exports = class TopPanel {
     const backgroundCenterY = this.background.bounds.center().y;
     const space = this.background.bounds.size.x / 4;
     this.title = new GameObject(internalMemory.monster.name, canvas, 14);
+    const scale = space / this.title.bounds.size.x;
+    if (scale < 1) {
+      this.title.setFontSize(Math.floor(14 * scale), canvas);
+    }
+
     this.title.bounds = this.title.bounds.centerOnPoint(
       new Point(space / 2, backgroundCenterY)
     );

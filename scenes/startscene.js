@@ -3,14 +3,13 @@ var Point = require("./../math/point");
 var Rectangle = require("./../math/rectangle");
 var Scene = require("./scene");
 var StartButton = require("./../GameObjects/startbutton");
-var SelectCharacterScene = require("./selectcharacterscene");
 const { SCENE_KEY_SELECT_CHARACTER } = require("../Models/constants");
 
 module.exports = class StartScene extends Scene {
   #items = [];
 
   onStart() {
-    const gameText = new TargetMoving("Game", this.canvas, new Point());
+    const gameText = new TargetMoving("SPASCII", this.canvas, new Point());
     gameText.color = "#FFFFFF";
     const canvasBounds = new Rectangle(
       new Point(),

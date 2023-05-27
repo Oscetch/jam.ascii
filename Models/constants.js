@@ -12,4 +12,5 @@ module.exports = {
   SCENE_KEY_BATTLE: 5,
   SCENE_KEY_BATTLE_END: 6,
   SCENE_KEY_DEATH: 7,
+  SCENE_KEY_WIN: 8,
 };

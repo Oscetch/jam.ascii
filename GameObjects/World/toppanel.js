@@ -3,6 +3,7 @@ const Point = require("../../math/point");
 const FuelIcon = require("../BattleStart/fuelicon");
 const LevelIcon = require("../BattleStart/levelicon");
 const MemoryIcon = require("../BattleStart/memoryicon");
+const Button = require("../button");
 const GameObject = require("../gameobject");
 const TopPanelBackground = require("../toppanelbackground");
 const FuelBar = require("./fuelbar");
@@ -13,7 +14,7 @@ const maxFuelTime = 30;
 module.exports = class TopPanel {
   #items = [];
 
-  constructor(canvas) {
+  constructor(canvas, onJump) {
     this.background = new TopPanelBackground(canvas);
     this.#items.push(this.background);
 
@@ -56,6 +57,19 @@ module.exports = class TopPanel {
     );
     this.planets.bounds.location = new Point(241, 36);
     this.#items.push(this.planets);
+
+    this.jumpButton = new Button(
+      "JUMP",
+      canvas,
+      () => {
+        onJump();
+      },
+      14
+    );
+    this.jumpButton.bounds = this.jumpButton.bounds.centerOnPoint(
+      new Point(415 + 126 / 2, 12 + 42 / 2)
+    );
+    this.jumpButton.regularColor = "#FFFFFF";
 
     this.fuelIcon = new FuelIcon(canvas);
     this.fuelIcon.bounds.location = new Point(661, 13);
@@ -107,5 +121,32 @@ module.exports = class TopPanel {
     for (let i = 0; i < this.#items.length; i++) {
       this.#items[i].render(canvas);
     }
+
+    if (this.canJump()) {
+      this.jumpButton.update(canvas, deltaTime);
+      this.jumpButton.render(canvas);
+    }
+  }
+
+  onMouseDown(point) {
+    if (this.canJump()) {
+      this.jumpButton.onMouseDown(point);
+    }
+  }
+
+  onMouseUp(point) {
+    if (this.canJump()) {
+      this.jumpButton.onMouseUp(point);
+    }
+  }
+
+  onMouseMove(point) {
+    if (this.canJump()) {
+      this.jumpButton.onMouseMove(point);
+    }
+  }
+
+  canJump() {
+    return internalmemory.fuel === 10 && internalmemory.level === 10;
   }
 };

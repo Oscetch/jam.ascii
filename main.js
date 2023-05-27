@@ -11,12 +11,14 @@ const {
   SCENE_KEY_BATTLE,
   SCENE_KEY_BATTLE_END,
   SCENE_KEY_DEATH,
+  SCENE_KEY_WIN,
 } = require("./Models/constants.js");
 const BattleStartScene = require("./scenes/battlestartscene.js");
 const BattleInterludeScene = require("./scenes/battleinterludescene.js");
 const BattleScene = require("./scenes/battlescene.js");
 const BattleEndScene = require("./scenes/battleendscene.js");
 const DeathScene = require("./scenes/deathscene.js");
+const WinScene = require("./scenes/winscene.js");
 
 var scenes = {};
 var scene;
@@ -70,6 +72,10 @@ function getScene(sceneIndex) {
       const deathScene = new DeathScene(canvasASCII, changeScene);
       deathScene.onStart();
       return deathScene;
+    case SCENE_KEY_WIN:
+      const winScene = new WinScene(canvasASCII, changeScene);
+      winScene.onStart();
+      return winScene;
   }
 }
 

@@ -3,7 +3,7 @@ const Ability = require("./ability");
 const CharacterStats = require("./../characterstats");
 const internalMemory = require("./../internalmemory");
 
-module.exports = class AttackAbility extends Ability {
+module.exports = class Sleep extends Ability {
   constructor() {
     super(
       "SLEEP",
