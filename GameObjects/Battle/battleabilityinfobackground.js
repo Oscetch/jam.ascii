@@ -12,6 +12,6 @@ module.exports = class BattleAbilityInfoBackground extends GameObject {
       canvas,
       16
     );
-    this.bounds.location.y = 504;
+    this.bounds.location.y = 544;
   }
 };

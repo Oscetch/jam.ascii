@@ -16,6 +16,7 @@ const BattleStartScene = require("./scenes/battlestartscene.js");
 const BattleInterludeScene = require("./scenes/battleinterludescene.js");
 const BattleScene = require("./scenes/battlescene.js");
 const BattleEndScene = require("./scenes/battleendscene.js");
+const DeathScene = require("./scenes/deathscene.js");
 
 var scenes = {};
 var scene;
@@ -66,7 +67,9 @@ function getScene(sceneIndex) {
       return battleEndScene;
     case SCENE_KEY_DEATH:
       scenes = {};
-      return getScene(SCENE_KEY_SELECT_CHARACTER);
+      const deathScene = new DeathScene(canvasASCII, changeScene);
+      deathScene.onStart();
+      return deathScene;
   }
 }
 

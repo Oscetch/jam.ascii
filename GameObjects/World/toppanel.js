@@ -5,7 +5,10 @@ const LevelIcon = require("../BattleStart/levelicon");
 const MemoryIcon = require("../BattleStart/memoryicon");
 const GameObject = require("../gameobject");
 const TopPanelBackground = require("../toppanelbackground");
+const FuelBar = require("./fuelbar");
 const PlanetIcon = require("./planeticon");
+
+const maxFuelTime = 30;
 
 module.exports = class TopPanel {
   #items = [];
@@ -70,6 +73,10 @@ module.exports = class TopPanel {
     this.fuelTime.bounds.location = new Point(556, 36);
     this.#items.push(this.fuelTime);
 
+    this.fuelBar = new FuelBar(canvas);
+    this.fuelBar.bounds.location = new Point(624, 36);
+    this.#items.push(this.fuelBar);
+
     for (let i = 1; i < this.#items.length; i++) {
       this.#items[i].color = "#FFFFFF";
     }
@@ -77,7 +84,7 @@ module.exports = class TopPanel {
 
   render(canvas, deltaTime) {
     internalmemory.fuelTime += deltaTime;
-    if (internalmemory.fuelTime > 300) {
+    if (internalmemory.fuelTime > maxFuelTime) {
       internalmemory.fuel -= 1;
       internalmemory.fuelTime = 0;
     }
@@ -89,10 +96,13 @@ module.exports = class TopPanel {
     this.fuelText.updateBackingArray(canvas, [
       `Fuel ${internalmemory.fuel}/10`,
     ]);
-    const timeLeft = 300 - internalmemory.fuelTime;
+    const timeLeft = maxFuelTime - internalmemory.fuelTime;
     const minutes = String(Math.floor(timeLeft / 60)).padStart(2, "0");
     const seconds = String(Math.floor(timeLeft % 60)).padStart(2, "0");
     this.fuelTime.updateBackingArray(canvas, [`${minutes}:${seconds}`]);
+    this.fuelBar.setTargetPercent(timeLeft / maxFuelTime);
+
+    this.fuelBar.update(canvas, deltaTime);
 
     for (let i = 0; i < this.#items.length; i++) {
       this.#items[i].render(canvas);

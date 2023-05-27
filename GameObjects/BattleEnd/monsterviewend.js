@@ -16,8 +16,14 @@ module.exports = class MonsterViewEnd {
     this.#items.push(this.titleText);
 
     this.monster = monster;
-    this.monster.setFontSize(20, canvas);
-    this.monster.bounds.location = new Point(260, 136);
+    const enemyCenter = new Point(288 + 112, 136 + 56);
+    const targetHeight = 112;
+    const changeInFontSize = targetHeight / this.monster.bounds.size.y;
+    this.monster.setFontSize(
+      Math.floor(changeInFontSize * this.monster.fontSize),
+      canvas
+    );
+    this.monster.bounds = this.monster.bounds.centerOnPoint(enemyCenter);
     this.#items.push(this.monster);
 
     this.levelIcon = new LevelIcon(canvas);

@@ -11,6 +11,7 @@ const {
   BEN,
   AVA,
   SCENE_KEY_BATTLE_START,
+  SCENE_KEY_DEATH,
 } = require("../Models/constants");
 const internalMemory = require("../Models/internalmemory");
 const EnterPlanetDialog = require("../GameObjects/World/enterplanetdialog");
@@ -43,6 +44,12 @@ module.exports = class WorldScene extends Scene {
 
   renderInternal(deltaTime) {
     this.canvas.clear();
+
+    if (internalMemory.fuel <= 0) {
+      this.onChangeScene(SCENE_KEY_DEATH);
+      return;
+    }
+
     this.distantStarHandler.render(this.canvas, deltaTime);
     if (!this.enterPlanetDialog.show) {
       this.character.update(this.canvas, deltaTime);

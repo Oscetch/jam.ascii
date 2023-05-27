@@ -1,7 +1,7 @@
 module.exports = {
-  fuel: 4,
+  fuel: 2,
   memories: 0,
-  level: 10,
+  level: 1,
   planetsVisited: 0,
   planetsTotal: 0,
   team: [],
@@ -10,7 +10,7 @@ module.exports = {
   currentRound: 0,
 
   reset() {
-    this.fuel = 4;
+    this.fuel = 2;
     this.memories = 0;
     this.level = 1;
     this.planetsVisited = 0;

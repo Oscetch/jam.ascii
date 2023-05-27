@@ -34,9 +34,10 @@ def clearBundle():
         remove(join(bundleDirectory, f))
 
 def moveFilesToBundle(files):
+    bundleFile = join(bundleDirectory, 'bundle.js')
     for f in files:
         shutil.copy(f, bundleDirectory)
-    system('npx browserify main.js -o ' + join(bundleDirectory, 'bundle.js'))
+    system('npx browserify main.js -o ' + bundleFile)
 
 
 if __name__ == '__main__':

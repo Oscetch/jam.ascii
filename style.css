@@ -8,6 +8,7 @@ div,
 canvas {
   margin: 0;
   padding: 0;
+  background-color: black;
 }
 canvas {
   font-family: "C64 Pro Mono", monospace;
