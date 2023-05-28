@@ -1,6 +1,7 @@
 # jam.ascii
 
-Made for the [ASCII Game Jam](https://itch.io/jam/ascii-game-jam-2023)
+Made for the [ASCII Game Jam](https://itch.io/jam/ascii-game-jam-2023)  
+Available on [itch.io](https://endlessinf.itch.io/ascii-rpg)
 
 ## Preconditions for "building"
 * node.js / npm available
