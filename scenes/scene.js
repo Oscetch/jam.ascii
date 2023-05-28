@@ -19,14 +19,18 @@ module.exports = class Scene {
     this.onChangeScene = onChangeScene;
   }
 
-  onStart() {
+  resetLastUpdate() {
     this.#lastUpdate = Date.now();
+  }
+
+  onStart() {
+    this.resetLastUpdate();
   }
   onEnd() {}
   render() {
     let now = Date.now();
     let deltaTime;
-    if (deltaTime) {
+    if (this.#lastUpdate) {
       deltaTime = (now - this.#lastUpdate) / 1000;
     } else {
       deltaTime = 0.01;

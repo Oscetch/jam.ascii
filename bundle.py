@@ -2,7 +2,7 @@ from os import listdir, getcwd, remove, system
 from os.path import isfile, join
 import shutil
 
-ignoredFiles = ['.git', 'bundle', 'bundle.py', '.gitignore', '.js']
+ignoredFiles = ['.git', 'bundle', 'bundle.py', '.gitignore', '.js', 'README.md']
 bundleDirectory = getcwd() + '/bundle'
 
 def isIgnored(path):

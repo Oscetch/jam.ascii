@@ -21,6 +21,10 @@ const MaxShip = require("../GameObjects/Characters/maxship");
 const BenShip = require("../GameObjects/Characters/benship");
 const AvaShip = require("../GameObjects/Characters/avaship");
 const TopPanel = require("../GameObjects/World/toppanel");
+const LeftIndicator = require("../GameObjects/World/leftindicator");
+const RightIndicator = require("../GameObjects/World/rightindicator");
+const TopIndicator = require("../GameObjects/World/topindicator");
+const BottomIndicator = require("../GameObjects/World/bottomindicator");
 
 module.exports = class WorldScene extends Scene {
   #items;
@@ -43,6 +47,18 @@ module.exports = class WorldScene extends Scene {
     this.topPanel = new TopPanel(this.canvas, () => {
       this.onChangeScene(SCENE_KEY_WIN);
     });
+
+    this.leftIndicator = new LeftIndicator(this.canvas);
+    this.rightIndicator = new RightIndicator(this.canvas);
+    this.topIndicator = new TopIndicator(this.canvas);
+    this.bottomIndicator = new BottomIndicator(this.canvas);
+
+    this.indicators = [
+      this.leftIndicator,
+      this.rightIndicator,
+      this.topIndicator,
+      this.bottomIndicator,
+    ];
   }
 
   renderInternal(deltaTime) {
@@ -76,6 +92,8 @@ module.exports = class WorldScene extends Scene {
       this.camera.bounds
     );
 
+    this.hideIndicators();
+
     for (let i = 0; i < this.#connectedToCharacter.length; i++) {
       const item = this.#connectedToCharacter[i];
       if (!item.bounds.overlaps(this.character.bounds)) {
@@ -84,23 +102,49 @@ module.exports = class WorldScene extends Scene {
       }
     }
 
+    const characterCenter = this.character.bounds.center();
+    var hasInteractableInView = false;
+    var closest;
     for (let i = 0; i < this.#items.length; i++) {
       const item = this.#items[i];
       if (!this.enterPlanetDialog.show) {
         item.update(this.canvas, deltaTime);
       }
       if (inclusiveBounds.overlaps(item.bounds)) {
-        if (
-          item.isInteractable() &&
-          !this.isConnectedToCharacter(item) &&
-          item.bounds.overlaps(this.character.bounds)
-        ) {
-          this.#connectedToCharacter.push(item);
-          this.enterPlanetDialog.show = true;
-          internalMemory.visitingPlanet = item;
+        if (item.isInteractable()) {
+          if (!hasInteractableInView) {
+            hasInteractableInView = true;
+            this.hideIndicators();
+          }
+
+          if (
+            !this.isConnectedToCharacter(item) &&
+            item.bounds.overlaps(this.character.bounds)
+          ) {
+            this.#connectedToCharacter.push(item);
+            this.enterPlanetDialog.show = true;
+            internalMemory.visitingPlanet = item;
+          }
         }
         item.renderTranslated(this.canvas, this.camera.bounds.location);
       }
+      const itemCenter = item.bounds.center();
+      const distance = itemCenter.distanceTo(characterCenter);
+      if (
+        !hasInteractableInView &&
+        item.isInteractable() &&
+        (!closest || distance < closest)
+      ) {
+        this.rightIndicator.shouldShow = itemCenter.x > characterCenter.x;
+        this.leftIndicator.shouldShow = itemCenter.x < characterCenter.x;
+        this.bottomIndicator.shouldShow = itemCenter.y > characterCenter.y;
+        this.topIndicator.shouldShow = itemCenter.y < characterCenter.y;
+        closest = distance;
+      }
+    }
+
+    for (let i = 0; i < this.indicators.length; i++) {
+      this.indicators[i].render(this.canvas);
     }
 
     this.character.renderTranslated(this.canvas, this.camera.bounds.location);
@@ -109,6 +153,12 @@ module.exports = class WorldScene extends Scene {
 
     if (this.enterPlanetDialog.show) {
       this.enterPlanetDialog.render(this.canvas, deltaTime);
+    }
+  }
+
+  hideIndicators() {
+    for (let i = 0; i < this.indicators.length; i++) {
+      this.indicators[i].shouldShow = false;
     }
   }
 

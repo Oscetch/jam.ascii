@@ -3,7 +3,7 @@ const Point = require("./math/point");
 
 module.exports = class Camera {
   bounds = new Rectangle(new Point(0, 0), new Point(800, 640));
-  speed = 2000;
+  speed = 3000;
   followTarget;
 
   update(deltaTime) {

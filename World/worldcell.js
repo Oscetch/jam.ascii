@@ -1,6 +1,7 @@
 const GameObject = require("../GameObjects/gameobject");
 const CanvasASCII = require("../canvas_ascii");
 const { randomInt, lerpColor } = require("../math/common");
+const Point = require("../math/point");
 const Rectangle = require("../math/rectangle");
 const Planet = require("./planet");
 const planetsnamegen = require("./planetnamesgen");
@@ -18,27 +19,27 @@ module.exports = {
     sun.color = lerpColor("#FFFF00", "#FFA500", sun.fontSize / 3);
     let system = [sun];
     const planetCount = randomInt(0, 9);
-    const split = bounds.split();
-    const quadrantsArray = [
-      split.topLeft,
-      split.topRight,
-      split.bottomLeft,
-      split.bottomRight,
-    ];
+    const split = bounds.diamondSplit();
+    const quadrantsArray = [split.left, split.right, split.top, split.bottom];
     const startQuadrant = quadrantsArray[randomInt(0, 4)];
     sun.bounds = sun.bounds.centerOn(startQuadrant);
-    const planetDistance =
-      sun.bounds.center().distanceTo(bounds.center()) / planetCount;
+    const maxDistance = startQuadrant
+      .center()
+      .distanceTo(
+        new Point(startQuadrant.location.x, startQuadrant.center().y)
+      );
+    const planetDistance = maxDistance / planetCount;
     const names = planetsnamegen.generateNames();
 
     for (let i = 0; i < planetCount; i++) {
       const premade = this.getPremadePlanetAscii();
+      const distance = planetDistance * (i + 1);
       const planet = new Planet(
         sun,
         premade.regular,
         premade.broken,
         canvas,
-        planetDistance * (i + 1),
+        distance,
         names[i]
       );
       system.push(planet);

@@ -174,4 +174,42 @@ module.exports = class Rectangle {
       ),
     };
   }
+
+  /**
+   * @typedef {Object} DiamondSplitRectangle
+   * @property {Rectangle} left
+   * @property {Rectangle} right
+   * @property {Rectangle} top
+   * @property {Rectangle} bottom
+   *
+   * @returns {DiamondSplitRectangle}
+   */
+  diamondSplit() {
+    const halfWidth = this.size.x / 2;
+    const halfHeight = this.size.y / 2;
+    return {
+      left: new Rectangle(
+        new Point(this.location.x, this.location.y + halfHeight / 2),
+        new Point(halfWidth, halfHeight)
+      ),
+      right: new Rectangle(
+        new Point(
+          this.location.x + halfWidth,
+          this.location.y + halfHeight / 2
+        ),
+        new Point(halfWidth, halfHeight)
+      ),
+      top: new Rectangle(
+        new Point(this.location.x + halfWidth / 2, this.location.y),
+        new Point(halfWidth, halfHeight)
+      ),
+      bottom: new Rectangle(
+        new Point(
+          this.location.x + halfWidth / 2,
+          this.location.y + halfHeight
+        ),
+        new Point(halfWidth, halfHeight)
+      ),
+    };
+  }
 };

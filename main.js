@@ -47,6 +47,7 @@ function getScene(sceneIndex) {
         scenes.world = new WorldScene(canvasASCII, changeScene);
         scenes.world.onStart();
       }
+      scenes.world.resetLastUpdate();
       return scenes.world;
     case SCENE_KEY_BATTLE_START:
       const battleStart = new BattleStartScene(canvasASCII, changeScene);

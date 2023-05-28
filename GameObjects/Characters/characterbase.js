@@ -3,7 +3,7 @@ const GameObject = require("../gameobject");
 
 module.exports = class CharacterBase extends GameObject {
   velocity = new Point();
-  movementSpeed = 1000;
+  movementSpeed = 1500;
 
   constructor(ascii, canvas, fontSize = 8) {
     super(ascii, canvas, fontSize);

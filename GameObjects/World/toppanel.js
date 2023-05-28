@@ -1,4 +1,5 @@
 const internalmemory = require("../../Models/internalmemory");
+const { clamp } = require("../../math/common");
 const Point = require("../../math/point");
 const FuelIcon = require("../BattleStart/fuelicon");
 const LevelIcon = require("../BattleStart/levelicon");
